@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const periodController = require('./controllers/period-controller');
 const symptomController = require('./controllers/symptom-controller');
 const exportController = require('./controllers/export-controller');
-const userController = require('./controllers/user-controller');
+const userController = require('./controllers/userController');
 
 const app = express();
 const db = require ('./models/database');
