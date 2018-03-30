@@ -1,9 +1,11 @@
-const { Client } = require('pg')
-const URI = 'postgres://ewvvucie:HyKg2tr2CuLUdJ7f3k4TR5zKDPphQSmr@stampy.db.elephantsql.com:5432/ewvvucie';
+const { Client } = require('pg');
+const URI_L = 'postgres://ewvvucie:HyKg2tr2CuLUdJ7f3k4TR5zKDPphQSmr@stampy.db.elephantsql.com:5432/ewvvucie';
+const URI_P = 'postgres://funtudqc:nzQxdbY5ZV6u8ceLvX-fwtoeSh8WNXP1@stampy.db.elephantsql.com:5432/funtudqc';
+
 
 const db = new Client({
-    connectionString: URI,
-  })
+    connectionString: URI_P,
+});
 
 db.connect();
 

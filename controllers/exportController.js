@@ -14,7 +14,7 @@ const exportController = {};
 /** 
  * Function Name: exportSymptoms
  * Function Prototype: function symptoms(req, res);
- * Description: exportSymptoms retriees all the symptoms from the database and 
+ * Description: exportSymptoms retrieves all the symptoms from the database and 
  * exports them out a csv file
  * Parameters:
  *   @param req - http.IncomingRequest - req.body.userId, req.body.symptom, 
@@ -29,7 +29,7 @@ const exportController = {};
  *   @return Response of success
  */
 exportController.getSymptoms = (req, res, next) => {
-    let userId = 1;
+    let userId = req.body.userId;
     const getSympTxt = `SELECT * FROM "symptoms" WHERE "userId" = ${userId}`;
     db.query(getSympTxt, (err, sympsData) => {
         if (err) throw new Error('DB QUERY FAILED TO RETREIVE USER SYMPTOMS', err);
