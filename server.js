@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const periodController = require('./controllers/period-controller');
 const symptomController = require('./controllers/symptom-controller');
 const exportController = require('./controllers/export-controller');
+const userController = require('./controllers/user-controller');
 
 const app = express();
 const db = require ('./models/database');
@@ -15,14 +16,14 @@ app.use(bodyParser.urlencoded({extended:false }));
 app.use(bodyParser.json());
 
 =======
-const userController = require('./controllers/userController');
-const symptomController = require('./controllers/symptomController');
-const exportController = require('./controllers/exportController');
+// const symptomController = require('./controllers/symptomController');
+// const exportController = require('./controllers/exportController');
 
-const app = express();
-const db = require('./models/db');
-const PORT = 3000;
+// const app = express();
+// const db = require('./models/db');
+// const PORT = 3000;
 
+    
 // Automatically parse urlencoded body content from incoming requests and 
 // place it in req.body
 app.use(bodyParser.urlencoded({ extended: false }));
