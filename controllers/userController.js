@@ -28,7 +28,7 @@ userController.createUser = (req, res, next) => {
     // if (req.body.username && req.body.password) {
     //     const { username, password } = req.body;
     //     const user = { username, password };
-        // const insUserTxt = (`INSERT INTO "user" ("username", "password") VALUES ($1, $2);`);
+    //     const insUserTxt = (`INSERT INTO "user" ("username", "password") VALUES ($1, $2);`);
     //     const userVals = [username, password];
     //     db.query(insUserTxt, userVals, (err) => {
     //         if (err) {
