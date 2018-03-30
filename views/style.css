@@ -1,0 +1,45 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin:0;
+}
+
+nav {
+  background:lightsteelblue;
+  padding: 20px 10px;
+}
+
+nav ul {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+nav li {
+  list-style-type: none;
+  display: inline-block;
+  margin: 0 10px 0 0;
+}
+
+nav a {
+  color: #fff;
+  font-size: 15px;
+  text-decoration: none;
+  padding: 10px;
+}
+
+main, header {
+  max-width: 960px;
+  margin: 30px auto;
+  padding: 0 10px;
+  color: #333;
+  font-size: 19px;
+  text-align: center;
+}
+
+.google-btn {
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px;
+  background: #f16d6d;
+}
