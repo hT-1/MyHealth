@@ -33,7 +33,5 @@ app.post('/symptom/create', symptomController.createSymptom);
 app.post('/symptom/readAll', symptomController.readSymptoms);
 app.post('/symptom/update/:id', symptomController.updateSymptom);
 app.post('/symptom/delete/:id', symptomController.deleteSymptom);
-app.post('/export/symptoms', exportController.getSymptoms, 
-                             exportController.exportCSV);
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

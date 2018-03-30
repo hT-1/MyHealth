@@ -11,7 +11,6 @@ const stringify = require('csv-stringify');
 const fs = require('fs');
 const exportController = {};
 
-
 /** 
  * Function Name: exportSymptoms
  * Function Prototype: function symptoms(req, res);
@@ -32,12 +31,6 @@ const exportController = {};
 exportController.getSymptoms = (req, res, next) => {
     let userId = 1;
     const getSympTxt = `SELECT * FROM "symptoms" WHERE "userId" = ${userId}`;
-    // async function getSymptom() {
-    //     db.query(getSympTxt, (err, sympsData) => {
-    //         if (err) throw new Error('DB QUERY FAILED TO RETREIVE USER SYMPTOMS', err);
-    //         data = sympsData.rows;
-    //     });
-    // }
     db.query(getSympTxt, (err, sympsData) => {
         if (err) throw new Error('DB QUERY FAILED TO RETREIVE USER SYMPTOMS', err);
         res.body = {};
@@ -57,11 +50,9 @@ exportController.exportCSV = (req, res) => {
         notes: 'Notes',
     };
     let entries = res.locals.data;
-
     for (let i = 0; i < Object.keys(entries).length; i++) {
         data.push([entries[i].userId, entries[i].symptomId, entries[i].createdAt.toString().slice(0,10), entries[i].type, entries[i].notes]);
     }
-
     stringify(data, { header: true, columns: cols }, (err, output) => {
         if (err) throw err;
         fs.writeFile('my.csv', output, (err) => {
@@ -69,7 +60,7 @@ exportController.exportCSV = (req, res) => {
             console.log('my.csv saved.');
         });
     });
-    res.send('Ok');
+    res.send('Success exporting CSV file');
 }
 
 

@@ -1,46 +1,38 @@
-const { Client } = require('pg');
-
-const URI = '	postgres://funtudqc:nzQxdbY5ZV6u8ceLvX-fwtoeSh8WNXP1@stampy.db.elephantsql.com:5432/funtudqc';
+const { Client } = require('pg')
+const URI = 'postgres://ewvvucie:HyKg2tr2CuLUdJ7f3k4TR5zKDPphQSmr@stampy.db.elephantsql.com:5432/ewvvucie';
 
 const db = new Client({
     connectionString: URI,
-})
-db.connect()
+  })
 
-const newTableUserTxt = `CREATE TABLE IF NOT EXISTS "user" (
-                        "userId"      SERIAL PRIMARY KEY,
-                        "username"    VARCHAR, 
-                        "password"    VARCHAR);`;
+db.connect();
 
-db.query(newTableUserTxt, (err) => {
-    if (err) {
-        throw new Error('DB QUERY FAILED TO CREATE NEW USER TABLE', err);
-    }
-});
-
-const newTablePerTxt = `CREATE TABLE IF NOT EXISTS "symptoms" (
+const newTableSymptomTxt = `CREATE TABLE IF NOT EXISTS "Symptoms" (
     "symptomId"   SERIAL PRIMARY KEY,
     "userId"      INT,
     "createdAt"   TIMESTAMP,
     "type"        VARCHAR,
-    "notes"       VARCHAR);`;
+    "notes"       VARCHAR
+);`;
 
-db.query(newTablePerTxt, (err) => {
+db.query(newTableSymptomTxt, (err, sucess) => {
     if (err) {
         throw new Error('DB QUERY FAILED TO CREATE NEW SYMPTOM TABLE', err);
     }
 });
 
-const newTableSympTxt = `CREATE TABLE IF NOT EXISTS "symptoms" (
-                        "symptomId"   SERIAL PRIMARY KEY,
-                        "userId"      INT,
-                        "createdAt"   TIMESTAMP,
-                        "type"        VARCHAR,
-                        "notes"       VARCHAR);`;
+const newTablePeriodTxt = `CREATE TABLE IF NOT EXISTS "Period" (
+    "periodId"      SERIAL PRIMARY KEY,
+    "userId"        INT,
+    "createdAt"     TIMESTAMP,
+    "periodLenght"  INT,
+    "cycleLength"   INT,
+    "notes"         VARCHAR
+);`;
 
-db.query(newTableSympTxt, (err) => {
+db.query(newTablePeriodTxt, (err, sucess) => {
     if (err) {
-        throw new Error('DB QUERY FAILED TO CREATE NEW SYMPTOM TABLE', err);
+        throw new Error('DB QUERY FAILED TO CREATE NEW Period TABLE', err);
     }
 });
 
