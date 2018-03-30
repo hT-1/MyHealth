@@ -61,41 +61,6 @@ app.post('/symptom/update/:id', symptomController.updateSymptom);
 app.post('/symptom/delete/:id', symptomController.deleteSymptom);
 
 
-// app.post('/deleteTran', (req, res) => {
-//     let transaction = req.body;
-//     let { tran_id } = transaction;
-
-//     const delTranTxt = (`DELETE FROM "transaction" 
-//                          WHERE "tran_id" = ${tran_id};`);
-//     db.query(delTranTxt, (err) => {
-//         if (err) {
-//             throw new Error('FAILED TO DELETE TRANSACTION', err)
-//         }
-//     });
-//     res.send(`Successfully deleted transation ID: ${tran_id} in database, ${req.body}`);
-// });
-
-// app.get('/userInfo/:username', (req, res) => {
-//     // res.send(req.query.username);
-//     const username = req.params.username;
-//     const getIDTxt = `SELECT user_id from "user" WHERE username = '${username}';`;
-//     const userVals = [username];
-//     db.query(getIDTxt, (err, idData) => {
-//         if (err) throw new Error('FAILED TO GET USERID', err);
-//         res.send(String(idData.rows[0].user_id));
-//     })
-// });
-
-// app.get('/transactions/:id', (req, res) => {
-//     const user_id = req.params.id;
-//     console.log(user_id);
-//     const getTransTxt = `SELECT * FROM transaction WHERE user_id = ${user_id};`;
-//     db.query(getTransTxt, (err, transData) => {
-//         if (err) throw new Error('FAILED TO GET USER TRANSACTIONS', err);
-//         res.send(transData.rows);
-//     });
-// });
-
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 >>>>>>> 14575004671748ee82d76c2d786adb67d18e435d
