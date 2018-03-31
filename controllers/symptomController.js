@@ -1,6 +1,6 @@
 /*
 * Filename: symptomController.js
-* Author: Luis Ramirez
+* Author: LUIS RAMIREZ
 * Description: symtomController.js holds all the controller actions for symptoms
 * Date: March 30, 2018
 */
@@ -11,13 +11,17 @@ const symptomController = {};
 
 /** 
  * Function Name: createSymptom
- * Description: createSymptom yaddeeyaddee
+ * Function Prototype: function symptoms(req, res);
+ * Description: addes an new instance of symptom with   
  * Parameters:
- *   @param req - http.IncomingRequest
- *   { "userId": "30", "type": "migraine", "notes": "migraines hurt" }
- *   @param res - http.ServerResponse
+ *   @param req - http.IncomingRequest - req.body.user_id, req.body.type, req.body.notes
+ * { user_id: INT, type: VARCHAR, notes: VARCHAR }
+ *   @param res - http.ServerResponse 
+ * Side Effects: None
+ * Error Conditions:
+ *   If the database fails to insert new user, error is thrown
  * Return Value: 
- *   @return None
+ *   @return Response of success
  */
 symptomController.createSymptom = (req, res, next) => {
     console.log(req.body);
@@ -34,18 +38,24 @@ symptomController.createSymptom = (req, res, next) => {
 };
 
 /** 
- * Function Name: createSymptom
- * Description: createSymptom yaddeeyaddee
+ * Function Name: readSymptom
+ * Function Prototype: function symptoms(req, res);
+ * Description: read all data associated with symptom type
  * Parameters:
- *   @param req - http.IncomingRequest
- *   { "userId": "30", "type": "migraine", "notes": "migraines hurt" }
- *   @param res - http.ServerResponse
+ *   @param req - http.IncomingRequest - req.body.type,
+ * searched for {  "type": "migraine" }
+ * finds { "userId": "30", "type": "migraine", "notes": "migraines hurt" }
+
+ *   @param res - http.ServerResponse 
+ * Side Effects: None
+ * Error Conditions:
+ *   If the database fails to find return error
  * Return Value: 
- *   @return None
+ *   @return Response of success
  */
 symptomController.readSymptom = (req, res, next) => {
-    const { symptom_id } = req.body;
-    const readSympTxt = (`SELECT '${symptom_id}' FROM symptoms FETCH FIRST 1 ROW ONLY;`);
+    const { type } = req.body;
+    const readSympTxt = (`SELECT * FROM symptoms WHERE type='${type}';`);
     db.query(readSympTxt, (err) => {
         if (err) {
             throw new Error('DB QUERY FAILED TO ADD NEW SYMPTOM TO DATABASE', err);
@@ -55,12 +65,14 @@ symptomController.readSymptom = (req, res, next) => {
 }
 
 /** 
- * Function Name: createSymptom
- * Description: createSymptom yaddeeyaddee
+ * Function Name: updateSymptom
+ * Description: updateSymptoms by changing symptom type value and new notes for all table (query needs to be refomated to only change on type)
  * Parameters:
- *   @param req - http.IncomingRequest
- *   { "userId": "30", "type": "migraine", "notes": "migraines hurt" }
+ *   @param req - http.IncomingRequest  req.body.type, req.body.notes
+ *   { type: VARCHAR, notes:VARCHAR }
  *   @param res - http.ServerResponse
+ * * Error Conditions:
+ *   If the database fails to find return error
  * Return Value: 
  *   @return None
  */
@@ -76,12 +88,14 @@ symptomController.updateSymptom = (req, res, next) => {
 }
 
 /** 
- * Function Name: createSymptom
- * Description: createSymptom yaddeeyaddee
+ * Function Name: deletesymptom
+ * Description: delteSymptom by selecting type and notes
  * Parameters:
- *   @param req - http.IncomingRequest
- *   { "userId": "30", "type": "migraine", "notes": "migraines hurt" }
+ *   @param req - http.IncomingRequest  req.body.type, req.body.notes
+ *   {  "type": "migraine", "notes": "migraines hurt" }
  *   @param res - http.ServerResponse
+ *  * Error Conditions:
+ *   If the database fails to find return error
  * Return Value: 
  *   @return None
  */

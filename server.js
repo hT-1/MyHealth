@@ -25,15 +25,16 @@ app.post('/', (req, res) => {
     res.send('POST request to the homepage');
 });
 
+
 app.post('/signup', userController.createUser);
 app.post('/period/create', periodController.createPeriod);
 app.post('/period/readAll', periodController.readPeriod);
-app.post('/period/update/:id', periodController.updatePeriod);
-app.post('/period/delete/:id', periodController.deletePeriod);
+app.post('/period/update/', periodController.updatePeriod);
+app.post('/period/delete/', periodController.deletePeriod);
 app.post('/symptom/create', symptomController.createSymptom);
 app.post('/symptom/readAll', symptomController.readSymptom);
-app.post('/symptom/update/:id', symptomController.updateSymptom);
-app.post('/symptom/delete/:id', symptomController.deleteSymptom);
+app.post('/symptom/update/', symptomController.updateSymptom);
+app.post('/symptom/delete/', symptomController.deleteSymptom);
 app.post('/export/csv', exportController.getSymptoms, 
                         exportController.exportCSV);
 
