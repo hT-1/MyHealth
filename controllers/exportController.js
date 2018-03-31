@@ -29,8 +29,8 @@ const exportController = {};
  *   @return Response of success
  */
 exportController.getSymptoms = (req, res, next) => {
-    let userId = req.body.userId;
-    const getSympTxt = `SELECT * FROM "symptoms" WHERE "userId" = ${userId}`;
+    let user_id = req.body.user_id;
+    const getSympTxt = `SELECT * FROM "symptoms" WHERE "user_id" = ${user_id}`;
     db.query(getSympTxt, (err, sympsData) => {
         if (err) throw new Error('DB QUERY FAILED TO RETREIVE USER SYMPTOMS', err);
         res.body = {};
@@ -43,15 +43,15 @@ exportController.exportCSV = (req, res) => {
     console.log(res.locals.data);
     let data = [];
     let cols = {
-        userId: 'User ID',
-        symptomId: 'Symptom ID',
+        user_id: 'User ID',
+        symptom_id: 'Symptom ID',
         date: 'Date',
         type: 'Type',
         notes: 'Notes',
     };
     let entries = res.locals.data;
     for (let i = 0; i < Object.keys(entries).length; i++) {
-        data.push([entries[i].userId, entries[i].symptomId, entries[i].createdAt.toString().slice(0,10), entries[i].type, entries[i].notes]);
+        data.push([entries[i].user_id, entries[i].symptom_id, entries[i].createdAt.toString().slice(0,10), entries[i].type, entries[i].notes]);
     }
     stringify(data, { header: true, columns: cols }, (err, output) => {
         if (err) throw err;
