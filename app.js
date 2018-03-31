@@ -19,7 +19,6 @@ app.set('view engine', 'ejs');
 // })
 
 app.use(cookieSession({
-  // name: 'session',
   keys: [keys.session.cookieKey],
   maxAge: 24 * 60 * 60 * 1000
 }));
@@ -32,7 +31,7 @@ app.use(passport.session());
 //set up routes
 app.use('/auth', authRoutes);
 
-//create home route
+//connect home route
 app.get('/', (req, res) => {
   res.render('home');
 })
