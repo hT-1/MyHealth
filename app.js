@@ -5,6 +5,9 @@ const pg = require('pg');
 const authRoutes = require('./routes/authRoutes');
 const passportSetup = require('./config/passport-setup');
 const keys = require('./config/keys');
+const passport = require('passport');
+const cookieSession = require('cookie-session');
+const cookieParser = require('cookie-parser');
 // const db = require('')
 
 //set up public file for html/css
@@ -14,6 +17,9 @@ app.set('view engine', 'ejs');
 // db.connect(keys.postgres.dbURI, () => {
 //   console.log('connected to db');
 // })
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 //set up routes
 app.use('/auth', authRoutes);
@@ -32,6 +38,9 @@ app.get('/login', (req, res) => {
 })
 
 app.get('/auth', authRoutes);
+
+
+
 
 app.listen(3000, ()=> {
   console.log('3000 now listening');
