@@ -9,10 +9,10 @@ const db = new Client({
 
 db.connect();
 
-const newTableSymptomTxt = `CREATE TABLE IF NOT EXISTS "Symptoms" (
-    "symptomId"   SERIAL PRIMARY KEY,
-    "userId"      INT,
-    "createdAt"   TIMESTAMP,
+const newTableSymptomTxt = `CREATE TABLE IF NOT EXISTS "symptoms" (
+    "symptom_id"   SERIAL PRIMARY KEY,
+    "user_id"      INT,
+    "created_at"   TIMESTAMP DEFAULT NOW(),
     "type"        VARCHAR,
     "notes"       VARCHAR
 );`;
@@ -23,12 +23,12 @@ db.query(newTableSymptomTxt, (err, sucess) => {
     }
 });
 
-const newTablePeriodTxt = `CREATE TABLE IF NOT EXISTS "Period" (
-    "periodId"      SERIAL PRIMARY KEY,
-    "userId"        INT,
-    "createdAt"     TIMESTAMP,
-    "periodLenght"  INT,
-    "cycleLength"   INT,
+const newTablePeriodTxt = `CREATE TABLE IF NOT EXISTS "period" (
+    "period_id"      SERIAL PRIMARY KEY,
+    "user_id"        INT,
+    "created_at"     TIMESTAMP,
+    "period_length"  INT,
+    "cycle_length"   INT,
     "notes"         VARCHAR
 );`;
 

@@ -3,7 +3,7 @@ body {
   margin:0;
 }
 
-nav {
+.navBar {
   background:lightsteelblue;
   padding: 20px 10px;
 }
@@ -42,4 +42,33 @@ main, header {
   font-size: 18px;
   padding: 10px;
   background: #f16d6d;
+}
+.mainContainer {
+  display: flex;
+  flex-direction: row;
+}
+.monthBox {
+  display: flex;
+  flex-direction: column;
+}
+.weekBox {
+  display: flex;
+  flex-direction: row;
+}
+.dayBox {
+  text-align: center;
+  padding: 5px;
+  width:30%;
+  margin: 5px;
+  float:left;
+  font-size: .8em;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, .2);
+}
+.dayBox:hover {
+  color: green;
+}
+
+.navBar {
+  display: flex;
+  flex-direction: row;
 }
