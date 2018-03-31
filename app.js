@@ -18,6 +18,14 @@ app.set('view engine', 'ejs');
 //   console.log('connected to db');
 // })
 
+app.use(cookieSession({
+  // name: 'session',
+  keys: [keys.session.cookieKey],
+  maxAge: 24 * 60 * 60 * 1000
+}));
+app.use(cookieParser());
+
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -37,11 +45,19 @@ app.get('/login', (req, res) => {
   res.render('login');
 })
 
-app.get('/auth', authRoutes);
+app.get('/main', (req, res) => {
+  console.log(res);
+  res.render('main');
+})
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  req.session = null;
+  res.redirect('/');
+})
 
 
 
-
-app.listen(3000, ()=> {
-  console.log('3000 now listening');
+app.listen(8080, ()=> {
+  console.log('8080 now listening');
 })

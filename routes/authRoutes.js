@@ -4,7 +4,7 @@ const passport = require('passport');
 
 //auth login
 router.get('/login', (req, res) => {
-  res.render('/login', { user: req.user });
+  res.render('/login');
 })
 
 //auth logout
@@ -22,14 +22,14 @@ router.get('/google', passport.authenticate('google',  {
 //passport sends to verify
 //google redirects to user redirect
 //in that local strategy
-router.get('/auth/google', passport.authenticate('google', {
+router.get('/google', passport.authenticate('google', {
   scope: ['https://www.googleapis.com/auth/userinfo.profile']
 }));
 
 //callback route for google to redirect to
 router.get('/google/redirect',
   passport.authenticate('google', {
-    successRedirect : '/',
+    successRedirect : '/main',
     failureRedirect : '/login'
   })
 );
