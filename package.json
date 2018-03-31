@@ -2,20 +2,26 @@
   "name": "red",
   "version": "1.0.0",
   "description": "",
+
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js ./app.js",
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cookies": "^0.7.1",
     "csv": "^2.0.0",
+    "ejs": "^2.5.8",
     "express": "^4.16.3",
     "express-validator": "^5.1.0",
-    "pg": "^7.4.1"
+    "passport": "^0.4.0",
+    "passport-google-oauth": "^1.0.0",
+    "pg": "^7.4.1",
+    "swig": "^1.4.2"
   },
   "devDependencies": {
     "nodemon": "^1.17.2",
