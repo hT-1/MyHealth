@@ -14,21 +14,5 @@ userController.createUser = (req, res, next) => {
     res.send(`createUser: SUCCESS`);
 };
 
-/**
-* verifyUser - Obtain username and password from the request body, locate
-* the appropriate user in the database, and then authenticate the submitted password
-* against the password stored in the database.
-*
-* @param req - http.IncomingRequest
-* @param res - http.ServerResponse
-*/
-userController.verifyUser = (req, res, next) => {
-    /**
-     * TODO ESTHER
-     */
-    res.send(`verifyUser: SUCCESS`);
-}
-
-
 
 module.exports = userController;

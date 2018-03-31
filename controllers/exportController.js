@@ -11,7 +11,7 @@ const stringify = require('csv-stringify');
 const fs = require('fs');
 const exportController = {};
 
-/** 
+/**
  * Function Name: exportSymptoms
  * Function Prototype: function symptoms(req, res);
  * Description: exportSymptoms retrieves all the symptoms from the database and 
