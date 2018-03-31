@@ -7,9 +7,9 @@ const symptomController = require('./controllers/symptomController');
 const exportController = require('./controllers/exportController');
 
 const app = express();
-const db = require('./models/db');
+const db = require ('./models/db');
 const PORT = 3000;
-
+    
 // Automatically parse urlencoded body content from incoming requests and 
 // place it in req.body
 app.use(bodyParser.urlencoded({ extended: false }));
