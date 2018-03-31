@@ -14,6 +14,22 @@ const passportSetup = require('./config/passport-setup');
 const keys = require('./config/keys');
 
 const app = express();
+
+
+//from app.js
+const path = require('path');
+const pg = require('pg');
+const authRoutes = require('./routes/authRoutes');
+// const passportSetup = require('./config/passport-setup');
+// const keys = require('./config/keys');
+app.set('view engine', 'ejs');
+
+app.use('/auth', authRoutes);
+
+
+
+
+
 const db = require ('./models/db');
 const PORT = 3000;
 
@@ -46,6 +62,17 @@ app.use('/auth', authRoutes);
 app.get('/', (req, res) => {
     res.render('home');
 });
+
+//from app.js
+app.get('/style.css', (req, res) => {
+    res.sendFile(path.join(__dirname, './views/style.css'));
+  })
+  app.get('/login', (req, res) => {
+    res.render('login');
+  })
+  
+  app.get('/auth', authRoutes);
+
 
 app.post('/', (req, res) => {
     res.send('POST request to the homepage');

@@ -38,5 +38,26 @@ db.query(newTablePeriodTxt, (err, sucess) => {
         throw new Error('DB QUERY FAILED TO CREATE NEW Period TABLE', err);
     }
 });
+const newTableMonthsTxt = `CREATE TABLE IF NOT EXISTS "months" (
+    "january"    jsonb,
+    "february"   jsonb,
+    "march"      jsonb,
+    "april"      jsonb,
+    "may"        jsonb,
+    "june"       jsonb,
+    "july"       jsonb,
+    "august"     jsonb,
+    "september"  jsonb,
+    "october"    jsonb,
+    "november"   jsonb,
+    "december"   jsonb
+);`;
+
+db.query(newTableMonthsTxt, (err, sucess) => {
+    if (err) {
+        throw new Error('DB QUERY FAILED TO CREATE NEW Period TABLE', err);
+    }
+});
+
 
 module.exports = db;
