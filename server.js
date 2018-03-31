@@ -5,8 +5,23 @@ const userController = require('./controllers/userController');
 const periodController = require('./controllers/periodController');
 const symptomController = require('./controllers/symptomController');
 const exportController = require('./controllers/exportController');
-
 const app = express();
+
+
+//from app.js
+const path = require('path');
+const pg = require('pg');
+const authRoutes = require('./routes/authRoutes');
+// const passportSetup = require('./config/passport-setup');
+// const keys = require('./config/keys');
+app.set('view engine', 'ejs');
+
+app.use('/auth', authRoutes);
+
+
+
+
+
 const db = require ('./models/db');
 const PORT = 3000;
     
@@ -18,8 +33,19 @@ app.use(bodyParser.json());
 
 ///////////////////////////////////////////////////////////////////////////////
 app.get('/', (req, res) => {
-    res.send('GET request to the homepage');
+ res.render('home');
 });
+
+//from app.js
+app.get('/style.css', (req, res) => {
+    res.sendFile(path.join(__dirname, './views/style.css'));
+  })
+  app.get('/login', (req, res) => {
+    res.render('login');
+  })
+  
+  app.get('/auth', authRoutes);
+
 
 app.post('/', (req, res) => {
     res.send('POST request to the homepage');

@@ -33,6 +33,6 @@ app.get('/login', (req, res) => {
 
 app.get('/auth', authRoutes);
 
-app.listen(3000, ()=> {
+app.listen(8080, ()=> {
   console.log('3000 now listening');
 })
