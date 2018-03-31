@@ -1,29 +1,4 @@
 {
-<<<<<<< HEAD
-  "name": "Red",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/langelramirez/Red.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/langelramirez/Red/issues"
-  },
-  "homepage": "https://github.com/langelramirez/Red#readme",
-  "dependencies": {
-    "express": "^4.16.3",
-    "nodemon": "^1.17.2",
-    "pg": "^7.4.1"
-=======
   "name": "red",
   "version": "1.0.0",
   "description": "",
@@ -37,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "csv": "^2.0.0",
     "express": "^4.16.3",
     "express-validator": "^5.1.0",
     "pg": "^7.4.1"
@@ -44,6 +20,5 @@
   "devDependencies": {
     "nodemon": "^1.17.2",
     "pg-hstore": "^2.3.2"
->>>>>>> 14575004671748ee82d76c2d786adb67d18e435d
   }
 }

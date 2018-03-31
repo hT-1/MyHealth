@@ -55,4 +55,3 @@ periodController.deletePeriod = (req, res, next) => {
 }
 
 module.exports = periodController;
-
