@@ -4,15 +4,15 @@ const URI_P = 'postgres://funtudqc:nzQxdbY5ZV6u8ceLvX-fwtoeSh8WNXP1@stampy.db.el
 
 
 const db = new Client({
-    connectionString: URI_P,
+    connectionString: URI_L,
 });
 
 db.connect();
 
-const newTableSymptomTxt = `CREATE TABLE IF NOT EXISTS "Symptoms" (
-    "symptomId"   SERIAL PRIMARY KEY,
-    "userId"      INT,
-    "createdAt"   TIMESTAMP,
+const newTableSymptomTxt = `CREATE TABLE IF NOT EXISTS "symptoms" (
+    "symptom_id"   SERIAL PRIMARY KEY,
+    "user_id"      VARCHAR,
+    "created_at"   TIMESTAMP DEFAULT NOW(),
     "type"        VARCHAR,
     "notes"       VARCHAR
 );`;
@@ -23,13 +23,14 @@ db.query(newTableSymptomTxt, (err, sucess) => {
     }
 });
 
-const newTablePeriodTxt = `CREATE TABLE IF NOT EXISTS "Period" (
-    "periodId"      SERIAL PRIMARY KEY,
-    "userId"        INT,
-    "createdAt"     TIMESTAMP,
-    "periodLenght"  INT,
-    "cycleLength"   INT,
-    "notes"         VARCHAR
+const newTablePeriodTxt = `CREATE TABLE IF NOT EXISTS "period" (
+    "period_id"      SERIAL PRIMARY KEY,
+    "user_id"        INT,
+    "created_at"     TIMESTAMP DEFAULT NOW(),
+    "period_length"  INT,
+    "cycle_length"   VARCHAR,
+    "notes"          VARCHAR
+   
 );`;
 
 db.query(newTablePeriodTxt, (err, sucess) => {

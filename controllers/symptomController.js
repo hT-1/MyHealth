@@ -21,12 +21,11 @@ const symptomController = {};
  */
 symptomController.createSymptom = (req, res, next) => {
     console.log(req.body);
-    const { userId, type, notes } = req.body;
-    let createdAt = new Date(Date.now()).toISOString();
-    const addSympTxt = (`INSERT INTO "symptoms" (userId, createdAt, type, notes) 
-                        VALUES ('${userId}', ${createdAt}, '${type}', '${notes}');`);
+    const { user_id, type, notes } = req.body;
+    const addSympTxt = (`INSERT INTO "symptoms" (user_id, type, notes) 
+                        VALUES ('${user_id}', '${type}', '${notes}');`);
     console.log(addSympTxt);
-    db.query(addSympTxt, (err) => {
+    db.query(addSympTxt, (err,rows) => {
         if (err) {
             throw new Error('DB QUERY FAILED TO ADD NEW SYMPTOM TO DATABASE', err);
         }
@@ -45,8 +44,8 @@ symptomController.createSymptom = (req, res, next) => {
  *   @return None
  */
 symptomController.readSymptom = (req, res, next) => {
-    const { symptomId } = req.body;
-    const readSympTxt = (`SELECT '${symptomId}' FROM Symptoms FETCH FIRST 1 ROW ONLY;`);
+    const { symptom_id } = req.body;
+    const readSympTxt = (`SELECT '${symptom_id}' FROM symptoms FETCH FIRST 1 ROW ONLY;`);
     db.query(readSympTxt, (err) => {
         if (err) {
             throw new Error('DB QUERY FAILED TO ADD NEW SYMPTOM TO DATABASE', err);
@@ -67,7 +66,7 @@ symptomController.readSymptom = (req, res, next) => {
  */
 symptomController.updateSymptom = (req, res, next) => {
     const { type, notes } = req.body;
-    const updateSympTxt = (`UPDATE "Symptoms" SET type='${type}', notes= '${notes}'`);
+    const updateSympTxt = (`UPDATE "symptoms" SET type='${type}', notes= '${notes}'`);
     db.query(updateSympTxt, (err) => {
         if (err) {
             throw new Error('DB QUERY FAILED TO UPDATE NEW SYMPTOM TO DATABASE', err);
@@ -88,7 +87,7 @@ symptomController.updateSymptom = (req, res, next) => {
  */
 symptomController.deleteSymptom = (req, res, next) => {
     const { type, notes } = req.body;
-    const deleteSympTxt = (`DELETE FROM "Symptoms" WHERE type='${type}' AND notes='${notes}'`);
+    const deleteSympTxt = (`DELETE FROM "symptoms" WHERE type='${type}' AND notes='${notes}'`);
     db.query(deleteSympTxt, (err) => {
         if (err) {
             throw new Error('DB QUERY FAILED TO DELETE FROM DATABASE', err);
