@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const userController = require('./controllers/userController');
+const periodController = require('./controllers/periodController');
 const symptomController = require('./controllers/symptomController');
 const exportController = require('./controllers/exportController');
 
@@ -25,13 +26,15 @@ app.post('/', (req, res) => {
 });
 
 app.post('/signup', userController.createUser);
-app.post('/period/create', symptomController.createSymptom);
-app.post('/period/readAll', symptomController.readSymptoms);
-app.post('/period/update/:id', symptomController.updateSymptom);
-app.post('/period/delete/:id', symptomController.deleteSymptom);
+app.post('/period/create', periodController.createPeriod);
+app.post('/period/readAll', periodController.readPeriod);
+app.post('/period/update/:id', periodController.updatePeriod);
+app.post('/period/delete/:id', periodController.deletePeriod);
 app.post('/symptom/create', symptomController.createSymptom);
-app.post('/symptom/readAll', symptomController.readSymptoms);
+app.post('/symptom/readAll', symptomController.readSymptom);
 app.post('/symptom/update/:id', symptomController.updateSymptom);
 app.post('/symptom/delete/:id', symptomController.deleteSymptom);
+app.post('/export/csv', exportController.getSymptoms, 
+                        exportController.exportCSV);
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
