@@ -12,6 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "cookie-session": "^2.0.0-beta.3",
     "cookies": "^0.7.1",
     "csv": "^2.0.0",
     "ejs": "^2.5.8",

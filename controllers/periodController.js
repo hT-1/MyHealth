@@ -1,6 +1,6 @@
 /*
 * Filename: symptomController.js
-* Author: Luis Ramirez
+* Author: LUIS RAMIREZ
 * Description: periodController.js holds all the controller actions for periods
 * Date: March 30, 2018
 */
@@ -8,47 +8,2215 @@
 const db = require('../models/db');
 
 const periodController = {};
-
+/** 
+ * Function Name: createPeriod
+ * Function Protoperiod: function symptoms(req, res);
+ * Description: addes an new instance of period with   
+ * Parameters:
+ *   @param req - http.IncomingRequest - req.body.period_id,req.body.user_id, req.body.period_length, req.body.cycle_length
+ * {user_id: INT, period_length:INT , cycle_length : INT, notes: VARCHAR  }
+ *   @param res - http.ServerResponse 
+ * Side Effects: None
+ * Error Conditions:
+ *   If the database fails to insert new user, error is thrown
+ * Return Value: 
+ *   @return Response of success
+ *///TESTED FROM POSTMAN updated cloud database
 periodController.createPeriod = (req, res, next) => {
-    const { periodId, userId, periodLength, cycleLength, notes } = req.body;
-    let createdAt = new Date(Date.now()).toISOString();
-    const addSympTxt = (`INSERT INTO "symptoms" (userId, createdAt, periodLength, cycleLength, notes) VALUES ('${userId}', '${createdAt}', '${periodLength}', '${cycleLength}', '${notes}' );`);
+    const { user_id, period_length, cycle_length, notes } = req.body;
+    const addSympTxt = (`INSERT INTO "period" (user_id, period_length, cycle_length, notes) 
+                        VALUES ('${user_id}', '${period_length}', '${cycle_length}', '${notes}' );`);
     db.query(addSympTxt, (err) => {
         if (err) {
-            throw new Error('DB QUERY FAILED TO ADD NEW SYMPTOM TO DATABASE', err);
+            throw new Error('DB QUERY FAILED TO ADD NEW period TO DATABASE', err);
         }
         res.send(`Success logging period`);
     });
 }
 
+/** 
+ * Function Name: readPeriod
+ * Function Protoperiod: function symptoms(req, res);
+ * Description: finds all data associated with period_id
+ * Parameters:
+ *   @param req - http.IncomingRequest - req.body.period_id
+ * { period_id: INT }
+ *   @param res - http.ServerResponse 
+ * Side Effects: None
+ * Error Conditions:
+ *   If the database fails to select from period_id, error is thrown
+ * Return Value: 
+ *   @return Response of success
+ *///TESTED FROM POSTMAN updated cloud database
 periodController.readPeriod = (req, res, next) => {
-    const { periodId } = req.body;
-    const readSympTxt = (`SELECT '${periodId}', FROM symptoms FETCH FIRST 1 ROW ONLY;`);
-    db.query(readSympTxt, (err) => {
+    const { period_id } = req.body;
+    console.log('the period id ======>',period_id)
+    // const readSympTxt = (`SELECT * FROM period WHERE period_id='${period_id}';`);
+    const readSympTxt = (`SELECT * FROM period`);
+
+    db.query(readSympTxt, (err,result) => {
         if (err) {
-            throw new Error('DB QUERY FAILED TO ADD NEW SYMPTOM TO DATABASE', err);
+            throw new Error('DB QUERY FAILED TO read PERIOD log from DATABASE', err);
         }
-        res.send(`Success retrieving period log`);
+        //  ** 
+//  * Function Name: wrapper ===> function data()  and funciton formatTable() 
+//  * Function Protoperiod: taked an array of objects dataWrapper([{},{},{},{}]) takes a single obj formatTable({})
+//  * Description: format table obtained from query into an array of nested objects
+//  * Error Conditions: return empty array
+//  * Return Value: 
+// [ 
+//     {  
+//    \"04\":{  
+//     \"01\":{  
+//        \"period\":{  
+//           \"periodLength\":10,
+//           \"cycleLength\":\"10\",
+//           \"periodNote\":\"a\",
+//           \"periodCreatedAt\":\"04-01-\\\"2018\"
+//        }
+//     }
+//  }
+// }{  
+//  \"04\":{  
+//     \"01\":{  
+//        \"period\":{  
+//           \"periodLength\":20,
+//           \"cycleLength\":\"20\",
+//           \"periodNote\":\"OMG IM DYING\",
+//           \"periodCreatedAt\":\"04-01-\\\"2018\"
+//        }
+//     }
+//  }
+// }
+//   ]
+//  */
+        let data = (tableObj)=> {
+            return tableObj.map(obj => {
+                return  formatTable(obj);
+            })
+        };
+        let formatTable = (obj) => {
+            let calendarObj = {};
+            let month = JSON.stringify(obj.created_at).split('-')[1];
+
+            let day = JSON.stringify(obj.created_at).split('-')[2].slice(0,2);
+            let periodLength = obj.period_length;
+            let cycleLength = obj.cycle_length;
+            let periodNote = obj.notes;
+            let periodCreatedAt = JSON.stringify(obj.created_at).split('-')[1] + 
+                                   '-' + JSON.stringify(obj.created_at).split('-')[2].slice(0,2) + 
+                                   '-' + JSON.stringify(obj.created_at).split('-')[0];
+            calendarObj[month] = {};
+            calendarObj[month][day] = {}
+            calendarObj[month][day].period = { 
+                "periodLength":periodLength,
+                "cycleLength" : cycleLength,
+                "periodNote": periodNote,
+                "periodCreatedAt": periodCreatedAt
+            }
+            // call new funciton 
+            return createCalendarObj(calendarObj);
+            
+        }
+        let createCalendarObj = (arrOfObj) => {
+            let newArr = [arrOfObj];
+let   calendar = {
+    "January":{
+        1: {
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        2:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        3:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        4:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        5:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        6:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        7:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        8:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        9:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        10:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        11:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        12:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        13:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        14:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        15:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        16:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        17:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        18:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        19:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        20:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        21:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        22:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        23:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        24:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        25:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        26:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        27:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        28:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        29:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        30:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        31:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        }
+
+    },
+    "February":{
+        1: {
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        2:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        3:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        4:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        5:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        6:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        7:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        8:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        9:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        10:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        11:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        12:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        13:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        14:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        15:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        16:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        17:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        18:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        19:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        20:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        21:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        22:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        23:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        24:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        25:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        26:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        27:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        28:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        29:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        30:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        31:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        }
+    },
+    "March":{ 
+        1: {
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        2:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        3:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        4:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        5:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        6:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        7:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        8:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        9:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        10:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        11:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        12:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        13:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        14:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        15:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        16:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        17:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        18:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        19:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        20:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        21:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        22:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        23:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        24:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        25:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        26:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        27:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        28:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        29:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        30:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        31:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        }
+    },
+    "April":{ 
+        1: {
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        2:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        3:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        4:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        5:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        6:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        7:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        8:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        9:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        10:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        11:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        12:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        13:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        14:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        15:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        16:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        17:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        18:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        19:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        20:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        21:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        22:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        23:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        24:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        25:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        26:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        27:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        28:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        29:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        30:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        31:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        }
+    },
+    "May":{ 
+        1: {
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        2:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        3:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        4:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        5:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        6:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        7:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        8:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        9:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        10:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        11:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        12:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        13:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        14:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        15:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        16:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        17:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        18:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        19:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        20:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        21:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        22:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        23:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        24:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        25:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        26:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        27:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        28:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        29:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        30:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        31:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        }
+    },
+    "June":{ 
+        1: {
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        2:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        3:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        4:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        5:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        6:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        7:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        8:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        9:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        10:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        11:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        12:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        13:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        14:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        15:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        16:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        17:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        18:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        19:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        20:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        21:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        22:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        23:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        24:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        25:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        26:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        27:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        28:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        29:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        30:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        31:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        }
+    },
+    "July":{ 
+        1: {
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        2:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        3:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        4:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        5:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        6:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        7:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        8:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        9:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        10:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        11:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        12:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        13:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        14:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        15:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        16:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        17:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        18:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        19:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        20:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        21:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        22:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        23:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        24:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        25:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        26:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        27:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        28:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        29:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        30:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        31:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        }
+    },
+    "August":{
+         1: {
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        2:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        3:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        4:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        5:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        6:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        7:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        8:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        9:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        10:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        11:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        12:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        13:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        14:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        15:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        16:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        17:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        18:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        19:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        20:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        21:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        22:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        23:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        24:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        25:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        26:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        27:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        28:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        29:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        30:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        31:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        }
+    },
+    "September":{
+         1: {
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        2:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        3:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        4:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        5:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        6:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        7:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        8:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        9:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        10:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        11:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        12:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        13:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        14:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        15:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        16:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        17:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        18:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        19:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        20:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        21:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        22:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        23:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        24:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        25:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        26:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        27:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        28:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        29:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        30:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        31:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        }
+    },
+    "October":{
+         1: {
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        2:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        3:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        4:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        5:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        6:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        7:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        8:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        9:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        10:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        11:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        12:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        13:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        14:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        15:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        16:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        17:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        18:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        19:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        20:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        21:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        22:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        23:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        24:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        25:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        26:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        27:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        28:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        29:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        30:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        31:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        }
+    },
+    "November":{ 
+        1: {
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        2:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        3:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        4:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        5:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        6:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        7:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        8:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        9:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        10:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        11:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        12:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        13:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        14:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        15:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        16:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        17:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        18:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        19:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        20:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        21:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        22:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        23:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        24:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        25:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        26:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        27:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        28:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        29:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        30:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        31:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        }
+    },
+    "December":{ 1: {
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        2:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        3:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        4:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        5:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        6:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        7:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        8:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        9:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        10:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        11:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        12:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        13:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        14:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        15:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        16:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        17:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        18:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        19:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        20:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        21:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        22:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        23:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        24:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        25:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        26:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        27:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        28:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        29:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        30:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        },
+        31:{
+            period:[],
+            notes:[],
+            createdAt:[]
+        }
+    }
+}
+           newArr.filter(obj => {
+                for (let key in obj ){
+
+                    if (key === '01'){
+                        for ( let newKey in obj[key]){
+                            if ( newKey === '01' ){
+                                calendar.January['1'].period.push(obj[key]['01'].period.periodLength);
+                                calendar.January['1'].notes.push(obj[key]['01'].period.notes); 
+                             }
+                        } 
+                    }
+                    if (key === '02'){
+                        for ( let newKey in obj[key]){
+                            if ( newKey === '01' ){
+                                calendar.February['1'].period.push(obj[key]['01'].period.periodLength);
+                                calendar.February['1'].notes.push(obj[key]['01'].period.notes); 
+                             }
+                        } 
+                    }
+
+                    if (key === '03'){
+                        for ( let newKey in obj[key]){
+                            if ( newKey === '31' ){
+                                calendar.March['31'].period.push(obj[key]['31'].period.periodLength);
+                                calendar.MArch['31'].notes.push(obj[key]['31'].period.notes); 
+                             }
+                             if ( newKey === '01' ){
+                                calendar.March['1'].period.push(obj[key]['01'].period.periodLength);
+                                calendar.MArch['1'].notes.push(obj[key]['01'].period.notes); 
+                             }
+                             if ( newKey === '02' ){
+                                calendar.March['2'].period.push(obj[key]['02'].period.periodLength);
+                                calendar.MArch['2'].notes.push(obj[key]['02'].period.notes); 
+                             }
+                             if ( newKey === '03' ){
+                                calendar.March['3'].period.push(obj[key]['03'].period.periodLength);
+                                calendar.MArch['3'].notes.push(obj[key]['03'].period.notes); 
+                             }
+                             if ( newKey === '04' ){
+                                calendar.March['4'].period.push(obj[key]['04'].period.periodLength);
+                                calendar.MArch['4'].notes.push(obj[key]['04'].period.notes); 
+                             }
+                             if ( newKey === '05' ){
+                                calendar.March['5'].period.push(obj[key]['05'].period.periodLength);
+                                calendar.MArch['5'].notes.push(obj[key]['05'].period.notes); 
+                             }
+                             if ( newKey === '06' ){
+                                calendar.March['6'].period.push(obj[key]['06'].period.periodLength);
+                                calendar.MArch['6'].notes.push(obj[key]['06'].period.notes); 
+                             }
+                             if ( newKey === '07' ){
+                                calendar.March['7'].period.push(obj[key]['07'].period.periodLength);
+                                calendar.MArch['7'].notes.push(obj[key]['07'].period.notes); 
+                             }
+                             if ( newKey === '08' ){
+                                calendar.March['8'].period.push(obj[key]['08'].period.periodLength);
+                                calendar.MArch['8'].notes.push(obj[key]['08'].period.notes); 
+                             }
+                             if ( newKey === '09' ){
+                                calendar.March['9'].period.push(obj[key]['09'].period.periodLength);
+                                calendar.MArch['9'].notes.push(obj[key]['09'].period.notes); 
+                             }
+                             if ( newKey === '10' ){
+                                calendar.March['10'].period.push(obj[key]['10'].period.periodLength);
+                                calendar.MArch['10'].notes.push(obj[key]['10'].period.notes); 
+                             }
+                             if ( newKey === '11' ){
+                                calendar.March['11'].period.push(obj[key]['11'].period.periodLength);
+                                calendar.MArch['11'].notes.push(obj[key]['11'].period.notes); 
+                             }
+                             if ( newKey === '12' ){
+                                calendar.March['12'].period.push(obj[key]['12'].period.periodLength);
+                                calendar.MArch['12'].notes.push(obj[key]['12'].period.notes); 
+                             }
+                             if ( newKey === '13' ){
+                                calendar.March['13'].period.push(obj[key]['13'].period.periodLength);
+                                calendar.MArch['13'].notes.push(obj[key]['13'].period.notes); 
+                             }
+                             if ( newKey === '14' ){
+                                calendar.March['14'].period.push(obj[key]['14'].period.periodLength);
+                                calendar.MArch['14'].notes.push(obj[key]['14'].period.notes); 
+                             }
+                             if ( newKey === '15' ){
+                                calendar.March['15'].period.push(obj[key]['15'].period.periodLength);
+                                calendar.MArch['15'].notes.push(obj[key]['15'].period.notes); 
+                             }
+                             if ( newKey === '16' ){
+                                calendar.March['16'].period.push(obj[key]['16'].period.periodLength);
+                                calendar.MArch['16'].notes.push(obj[key]['16'].period.notes); 
+                             }
+                             if ( newKey === '17' ){
+                                calendar.March['17'].period.push(obj[key]['17'].period.periodLength);
+                                calendar.MArch['17'].notes.push(obj[key]['17'].period.notes); 
+                             }
+                             if ( newKey === '18' ){
+                                calendar.March['18'].period.push(obj[key]['18'].period.periodLength);
+                                calendar.MArch['18'].notes.push(obj[key]['18'].period.notes); 
+                             }
+                             if ( newKey === '19' ){
+                                calendar.March['19'].period.push(obj[key]['19'].period.periodLength);
+                                calendar.MArch['19'].notes.push(obj[key]['19'].period.notes); 
+                             }
+                             if ( newKey === '20' ){
+                                calendar.March['20'].period.push(obj[key]['20'].period.periodLength);
+                                calendar.MArch['20'].notes.push(obj[key]['20'].period.notes); 
+                             }
+                             if ( newKey === '21' ){
+                                calendar.March['21'].period.push(obj[key]['21'].period.periodLength);
+                                calendar.MArch['21'].notes.push(obj[key]['21'].period.notes); 
+                             }
+                             if ( newKey === '22' ){
+                                calendar.March['22'].period.push(obj[key]['22'].period.periodLength);
+                                calendar.MArch['22'].notes.push(obj[key]['22'].period.notes); 
+                             }
+                             if ( newKey === '23' ){
+                                calendar.March['23'].period.push(obj[key]['23'].period.periodLength);
+                                calendar.MArch['23'].notes.push(obj[key]['23'].period.notes); 
+                             }
+                             if ( newKey === '24' ){
+                                calendar.March['24'].period.push(obj[key]['24'].period.periodLength);
+                                calendar.MArch['24'].notes.push(obj[key]['24'].period.notes); 
+                             }
+                             if ( newKey === '25' ){
+                                calendar.March['25'].period.push(obj[key]['25'].period.periodLength);
+                                calendar.MArch['25'].notes.push(obj[key]['25'].period.notes); 
+                             }
+                             if ( newKey === '26' ){
+                                calendar.March['26'].period.push(obj[key]['26'].period.periodLength);
+                                calendar.MArch['26'].notes.push(obj[key]['26'].period.notes); 
+                             }
+                             if ( newKey === '28' ){
+                                calendar.March['28'].period.push(obj[key]['28'].period.periodLength);
+                                calendar.MArch['28'].notes.push(obj[key]['28'].period.notes); 
+                             }
+                             if ( newKey === '29' ){
+                                calendar.March['29'].period.push(obj[key]['29'].period.periodLength);
+                                calendar.MArch['29'].notes.push(obj[key]['29'].period.notes); 
+                             }
+                             if ( newKey === '30' ){
+                                calendar.March['30'].period.push(obj[key]['30'].period.periodLength);
+                                calendar.MArch['30'].notes.push(obj[key]['30'].period.notes); 
+                             } 
+                        } 
+                    }
+
+                    if (key === '04'){
+                        for ( let newKey in obj[key]){
+                            if ( newKey === '01' ){
+                                calendar.April['1'].period.push(obj[key]['01'].period.periodLength);
+                                calendar.April['1'].notes.push(obj[key]['01'].period.notes); 
+                             }
+                        } 
+                    }
+                }
+               
+            });
+        
+        return calendar;
+        
+        }
+
+        // console.log(result.rows)
+        res.send(data(result.rows));
     });
 }
 
+/** 
+ * Function Name: updatePeriod
+ * Function Protoperiod: function symptoms(req, res);
+ * Description: updated period length and cycle length and notes
+ * Parameters:
+ *   @param req - http.IncomingRequest - req.body.notes,  req.body.period_length, req.body.cycle_length
+ * { period_length: INT, cycle_length: INT, notes: VARCHAR }
+ * Side Effects: None
+ * Error Conditions:
+ *   If the database fails to update notes, period_length, cycle_length
+ * Return Value: 
+ *   @return Response of success
+ */
 periodController.updatePeriod = (req, res, next) => {
-    const { periodLength, cycleLength, notes } = req.body;
-    const updateSympTxt = (`UPDATE "symptoms" SET periodLength='${periodLength}', cycleLength='${cycleLength}' notes= '${notes}'`);
+    const { period_length, cycle_length, notes } = req.body;
+    console.log('hello')
+    const updateSympTxt = (`UPDATE "period" SET period_length='${period_length}', cycle_length='${cycle_length}' notes= '${notes}'`);
     db.query(updateSympTxt, (err) => {
         if (err) {
-            throw new Error('DB QUERY FAILED TO UPDATE NEW SYMPTOM TO DATABASE', err);
+            throw new Error('DB QUERY FAILED TO UPDATE PERIOD VALUES TO DATABASE', err);
         }
         res.send('Success updating period entry');
     });
 }
 
+/** 
+ * Function Name: deletePeriod
+ * Function Protoperiod: function symptoms(req, res);
+ * Description: period by matching length cycle and notes
+ * Parameters:
+ *   @param req - http.IncomingRequest -   req.body.period_length, req.body.cycle_length , req.body.notes
+ * { period_length: INT, cycle_length:INT, notes: VARCHAR }
+ * Side Effects: None
+ * Error Conditions:
+ *   If the database fails to delete return error
+ * Return Value: 
+ *   @return Response of success
+ */
 periodController.deletePeriod = (req, res, next) => {
-    const { type, notes } = req.body;
-    const deleteSympTxt = (`DELETE FROM "symptoms" WHERE periodLength='${periodLength}' AND cycleLength='${cycleLength}' AND notes= '${notes}'`);
+    const {period_length, cycle_length, notes } = req.body;
+    console.log('look here')
+    const deleteSympTxt = (`DELETE FROM "period" WHERE period_length='${period_length}' AND cycle_length='${cycle_length}' AND notes= '${notes}'`);
     db.query(deleteSympTxt, (err) => {
         if (err) {
-            throw new Error('DB QUERY FAILED TO DELETE FROM DATABASE', err);
+            throw new Error('DB QUERY FAILED TO DELETE PERIOD FROM DATABASE', err);
         }
         res.send('Success deleting period entry');
     });
