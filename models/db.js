@@ -4,7 +4,7 @@ const URI_P = 'postgres://funtudqc:nzQxdbY5ZV6u8ceLvX-fwtoeSh8WNXP1@stampy.db.el
 
 // Change connectionString to desired URI to test code
 const db = new Client({
-    connectionString: URI_L,
+    connectionString: URI_P,
 });
 
 db.connect();
