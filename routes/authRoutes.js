@@ -29,7 +29,7 @@ router.get('/google', passport.authenticate('google', {
 //callback route for google to redirect to
 router.get('/google/redirect',
   passport.authenticate('google', {
-    successRedirect : '/main',
+    successRedirect : '/',
     failureRedirect : '/login'
   })
 );
