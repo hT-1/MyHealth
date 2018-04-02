@@ -17,9 +17,7 @@ const app = express();
 
 
 //from app.js
-const path = require('path');
 const pg = require('pg');
-const authRoutes = require('./routes/authRoutes');
 // const passportSetup = require('./config/passport-setup');
 // const keys = require('./config/keys');
 app.set('view engine', 'ejs');
@@ -70,7 +68,7 @@ app.get('/style.css', (req, res) => {
   app.get('/login', (req, res) => {
     res.render('login');
   })
-  
+
   app.get('/auth', authRoutes);
 
 

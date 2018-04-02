@@ -1,7 +1,7 @@
 const { Client } = require('pg');
 const URI_L = 'postgres://ewvvucie:HyKg2tr2CuLUdJ7f3k4TR5zKDPphQSmr@stampy.db.elephantsql.com:5432/ewvvucie';
-const URI_P = 'postgres://funtudqc:nzQxdbY5ZV6u8ceLvX-fwtoeSh8WNXP1@stampy.db.elephantsql.com:5432/funtudqc';
-
+// URI_P is test Elephant setup
+// const URI_P = 'postgres://funtudqc:nzQxdbY5ZV6u8ceLvX-fwtoeSh8WNXP1@stampy.db.elephantsql.com:5432/funtudqc';
 
 const db = new Client({
     connectionString: URI_L,
@@ -9,6 +9,7 @@ const db = new Client({
 
 db.connect();
 
+//below make health log with pre-populated fields
 const newTableSymptomTxt = `CREATE TABLE IF NOT EXISTS "symptoms" (
     "symptom_id"   SERIAL PRIMARY KEY,
     "user_id"      VARCHAR,
@@ -16,6 +17,14 @@ const newTableSymptomTxt = `CREATE TABLE IF NOT EXISTS "symptoms" (
     "type"        VARCHAR,
     "notes"       VARCHAR
 );`;
+
+//new table for users
+"user_id"   SERIAL PRIMARY KEY,
+"created_at"   TIMESTAMP DEFAULT NOW(),
+"type"        VARCHAR,
+"notes"       VARCHAR
+
+
 
 db.query(newTableSymptomTxt, (err, sucess) => {
     if (err) {
@@ -30,7 +39,7 @@ const newTablePeriodTxt = `CREATE TABLE IF NOT EXISTS "period" (
     "period_length"  INT,
     "cycle_length"   VARCHAR,
     "notes"          VARCHAR
-   
+
 );`;
 
 db.query(newTablePeriodTxt, (err, sucess) => {
