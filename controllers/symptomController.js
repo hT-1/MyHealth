@@ -29,10 +29,12 @@ const symptomController = {};
 symptomController.createSymptom = (req, res, next) => {
     console.log(req.body);
     const { type } = req.body;
+    const newEntry = (`INSERT INTO symptom (type)
+                        VALUES ('backache');`);
     const addSympTxt = (`INSERT INTO symptom (type)
-                        VALUES ('acne');`);
-    console.log(addSympTxt);
-    db.query(addSympTxt, (err,rows) => {
+                        VALUES ('backache');`);
+    console.log(newEntry);
+    db.query(newEntry, (err,rows) => {
         if (err) {
             throw new Error('DB QUERY FAILED TO ADD NEW SYMPTOM', err);
         }

@@ -39,8 +39,8 @@ db.query(user, (err, success) => {
 
 const newPeriod = `CREATE TABLE IF NOT EXISTS "newPeriod" (
     "user_id"        SERIAL PRIMARY KEY,
-    "start"          DATE NOT NULL,
-    "end"            DATE NOT NULL,
+    "start"          DATE,
+    "end"            DATE,
     "notes"          VARCHAR
 );`;
 

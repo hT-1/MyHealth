@@ -22,9 +22,9 @@ const periodController = {};
  *   @return Response of success
  *///TESTED FROM POSTMaN updated cloud database
 periodController.createPeriod = (req, res, next) => {
-    const { user_id, period_length, cycle_length, notes } = req.body;
-    const addSympTxt = (`INSERT INTO "period" (user_id, period_length, cycle_length, notes)
-                        VALUES ('${user_id}', '${period_length}', '${cycle_length}', '${notes}' );`);
+    const { start, end, notes } = req.body;
+    const addnewPeriod = (`INSERT INTO newPeriod (start, end, notes)
+                        VALUES ('start', 'end', 'notes' );`);
     db.query(addSympTxt, (err) => {
         if (err) {
             throw new Error('DB QUERY FAILED TO ADD NEW period TO DATABASE', err);
