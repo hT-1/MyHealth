@@ -10,6 +10,7 @@ const userController = require('./controllers/userController');
 const periodController = require('./controllers/periodController');
 const symptomController = require('./controllers/symptomController');
 const exportController = require('./controllers/exportController');
+const entryController = require('./controllers/entryController')
 
 const authRoutes = require('./routes/authRoutes');
 const passportSetup = require('./config/passport-setup');
@@ -17,16 +18,12 @@ const keys = require('./config/keys');
 
 const app = express();
 
-<<<<<<< HEAD
 
 //from app.js
-const pg = require('pg');
 // const passportSetup = require('./config/passport-setup');
 // const keys = require('./config/keys');
 app.set('view engine', 'ejs');
 
-=======
->>>>>>> 1a152fcc929fcd27fa01e4236715931caf3e32eb
 app.use('/auth', authRoutes);
 
 const db = require ('./models/db');
@@ -43,7 +40,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, './')));
 ///////////////////////////////////////////////////////////////////////////////
 
-//FIXME 
+//FIXME
 app.get('/initialCalendar', (req, res) => {
     let calState = {
         calendar: {
@@ -517,10 +514,14 @@ app.post('/period/create', periodController.createPeriod);
 app.post('/period/readAll', periodController.readPeriod);
 app.post('/period/update/', periodController.updatePeriod);
 app.post('/period/delete/', periodController.deletePeriod);
+app.post('/entry/create/', entryController.createEntry);
+app.post('/entry/readAll/', entryController.readEntry);
+app.post('/entry/update/', entryController.updateEntry);
+app.post('/entry/delete/', entryController.deleteEntry);
 app.post('/symptom/create', symptomController.createSymptom);
 app.post('/symptom/readAll', symptomController.readSymptom);
-app.post('/symptom/update/', symptomController.updateSymptom);
-app.post('/symptom/delete/', symptomController.deleteSymptom);
+//app.post('/symptom/update/', symptomController.updateSymptom);
+//app.post('/symptom/delete/', symptomController.deleteSymptom);
 app.post('/export/csv', exportController.getSymptoms,
                         exportController.exportCSV);
 
