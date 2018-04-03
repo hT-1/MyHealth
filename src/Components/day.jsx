@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Week = props => {
+const Day = props => {
 //   let result;
 //   function updateInputValue(e) {
 //     result = e.target.value;
@@ -9,9 +9,9 @@ const Week = props => {
     // how do we create the circuit between the store and an input field?
     // how do we update the store from a presentation component?
     <div className="dayBox">
-        <h1>DAY</h1>
+        <span className="day">{props.day}</span>
     </div>
   )
 }
 
-export default Week;
+export default Day;

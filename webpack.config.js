@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 
 const entry = [
-  './frontend/main.js'
+  './src/main.js'
 ];
 
 const output = {
