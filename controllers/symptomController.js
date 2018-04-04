@@ -9,35 +9,40 @@ const db = require('../models/db');
 
 const symptomController = {};
 
-/** 
+/**
  * Function Name: createSymptom
  * Function Prototype: function symptoms(req, res);
- * Description: addes an new instance of symptom with   
+ * Description: addes an new instance of symptom with
  * Parameters:
  *   @param req - http.IncomingRequest - req.body.user_id, req.body.type, req.body.notes
  * { user_id: INT, type: VARCHAR, notes: VARCHAR }
- *   @param res - http.ServerResponse 
+ *   @param res - http.ServerResponse
  * Side Effects: None
  * Error Conditions:
  *   If the database fails to insert new user, error is thrown
- * Return Value: 
+ * Return Value:
  *   @return Response of success
  */
+
+
+//Creates new symptom for specific user
 symptomController.createSymptom = (req, res, next) => {
     console.log(req.body);
-    const { user_id, type, notes } = req.body;
-    const addSympTxt = (`INSERT INTO "symptoms" (user_id, type, notes) 
-                        VALUES ('${user_id}', '${type}', '${notes}');`);
-    console.log(addSympTxt);
-    db.query(addSympTxt, (err,rows) => {
+    const { type } = req.body;
+    const newEntry = (`INSERT INTO symptom (type)
+                        VALUES ('backache');`);
+    const addSympTxt = (`INSERT INTO symptom (type)
+                        VALUES ('backache');`);
+    console.log(newEntry);
+    db.query(newEntry, (err,rows) => {
         if (err) {
-            throw new Error('DB QUERY FAILED TO ADD NEW SYMPTOM TO DATABASE', err);
+            throw new Error('DB QUERY FAILED TO ADD NEW SYMPTOM', err);
         }
         res.send(`ok`);
     });
 };
 
-/** 
+/**
  * Function Name: readSymptom
  * Function Prototype: function symptoms(req, res);
  * Description: read all data associated with symptom type
@@ -46,40 +51,40 @@ symptomController.createSymptom = (req, res, next) => {
  * searched for {  "type": "migraine" }
  * finds { "userId": "30", "type": "migraine", "notes": "migraines hurt" }
 
- *   @param res - http.ServerResponse 
+ *   @param res - http.ServerResponse
  * Side Effects: None
  * Error Conditions:
  *   If the database fails to find return error
- * Return Value: 
+ * Return Value:
  *   @return Response of success
  */
 symptomController.readSymptom = (req, res, next) => {
-    const { type } = req.body;
+    const {  type } = req.body;
     // const readSympTxt = (`SELECT * FROM symptoms WHERE type='${type}';`);
-    const readSympTxt = (`SELECT * FROM symptoms`);
+    const readSympTxt = (`SELECT * FROM symptom, entry WHERE symptom_id = entry_id`); //specify with join table what to select
     db.query(readSympTxt, (err, result) => {
         if (err) {
             throw new Error('DB QUERY FAILED TO ADD NEW SYMPTOM TO DATABASE', err);
         }
-//  ** 
-//  * Function Name: wrapper ===> function data()  and funciton formatTable() 
+//  **
+//  * Function Name: wrapper ===> function data()  and funciton formatTable()
 //  * Function Prototype: taked an array of objects dataWrapper([{},{},{},{}]) takes a single obj formatTable({})
 //  * Description: format table obtained from query into an array of nested objects
 //  * Error Conditions: return empty array
-//  * Return Value: 
-// [ {  \"03\":{  
-//         \"31\":{  
-//            \"symptom\":{  
+//  * Return Value:
+// [ {  \"03\":{
+//         \"31\":{
+//            \"symptom\":{
 //               \"type\":\"migrasdsine\",
 //               \"notes\":\"misdfsg\",
 //               \"createdAt\":\"03-31-\\\"2018\"
 //            }
 //         }
 //      }
-//   }, {  
-//      \"03\":{  
-//         \"31\":{  
-//            \"symptom\":{  
+//   }, {
+//      \"03\":{
+//         \"31\":{
+//            \"symptom\":{
 //               \"type\":\"migrasdsine\",
 //               \"notes\":\"misdfsg\",
 //               \"createdAt\":\"03-31-\\\"2018\"
@@ -89,32 +94,36 @@ symptomController.readSymptom = (req, res, next) => {
 //   }
 //  */
         let data = (tableObj)=> {
+          console.log("symptomController ln95", tableObj)
             return tableObj.map(obj => {
-                return  formatTable(obj);
+              console.log('symptomController ln97', obj)
+                return formatTable(obj);
             })
         };
         let formatTable = (obj) => {
             let calendarObj = {};
-            let month = JSON.stringify(obj.created_at).split('-')[1];
+              //        V Here can we replace with 'entry_date'?
+            // let month = JSON.stringify(obj.created_at).split('-')[1];
+            // let day = JSON.stringify(obj.created_at).split('-')[2].slice(0,2);
 
-            let day = JSON.stringify(obj.created_at).split('-')[2].slice(0,2);
             let symptomType = obj.type;
             let symptomNote = obj.notes;
-            let symptomCreatedAt = JSON.stringify(obj.created_at).split('-')[1] + 
-                                   '-' + JSON.stringify(obj.created_at).split('-')[2].slice(0,2) + 
+                        //        V Here can we replace with 'entry_date'?
+            let symptomCreatedAt = JSON.stringify(obj.created_at).split('-')[1] +
+                                   '-' + JSON.stringify(obj.created_at).split('-')[2].slice(0,2) +
                                    '-' + JSON.stringify(obj.created_at).split('-')[0];
             calendarObj[month] = {};
             calendarObj[month][day] = {}
-            calendarObj[month][day].symptom = { 
-                "type":symptomType,
+            calendarObj[month][day].symptom = {
+                "symptom_id":symptomType,
                 "notes": symptomNote,
-                "createdAt": symptomCreatedAt
+                "entry_date": entry_date
             }
             return createCalendarObj(calendarObj);
         }
         let createCalendarObj = (arrOfObj) => {
             let newArr = [arrOfObj];
-let   calendar = {
+            let calendar = {
     "January":{
         1: {
             type:[],
@@ -430,7 +439,7 @@ let   calendar = {
             createdAt:[]
         }
     },
-    "March":{ 
+    "March":{
         1: {
             type:[],
             notes:[],
@@ -587,7 +596,7 @@ let   calendar = {
             createdAt:[]
         }
     },
-    "April":{ 
+    "April":{
         1: {
             type:[],
             notes:[],
@@ -744,7 +753,7 @@ let   calendar = {
             createdAt:[]
         }
     },
-    "May":{ 
+    "May":{
         1: {
             type:[],
             notes:[],
@@ -901,7 +910,7 @@ let   calendar = {
             createdAt:[]
         }
     },
-    "June":{ 
+    "June":{
         1: {
             type:[],
             notes:[],
@@ -1058,7 +1067,7 @@ let   calendar = {
             createdAt:[]
         }
     },
-    "July":{ 
+    "July":{
         1: {
             type:[],
             notes:[],
@@ -1686,7 +1695,7 @@ let   calendar = {
             createdAt:[]
         }
     },
-    "November":{ 
+    "November":{
         1: {
             type:[],
             notes:[],
@@ -2000,172 +2009,173 @@ let   calendar = {
         }
     }
 }
+          //checks date for cal, pushes db info for date if true
            newArr.filter(obj => {
                 for (let key in obj ){
-
                     if (key === '01'){
                         for ( let newKey in obj[key]){
                             if ( newKey === '01' ){
                                 calendar.January['1'].type.push(obj[key]['01'].symptom.type);
-                                calendar.January['1'].notes.push(obj[key]['01'].symptom.notes); 
+                                calendar.January['1'].notes.push(obj[key]['01'].symptom.notes);
                              }
-                        } 
+                        }
                     }
                     if (key === '02'){
                         for ( let newKey in obj[key]){
                             if ( newKey === '01' ){
                                 calendar.February['1'].type.push(obj[key]['01'].symptom.type);
-                                calendar.February['1'].notes.push(obj[key]['01'].type.notes); 
+                                calendar.February['1'].notes.push(obj[key]['01'].type.notes);
                              }
-                        } 
+                        }
                     }
 
                     if (key === '03'){
                         for ( let newKey in obj[key]){
                             if ( newKey === '31' ){
                                 calendar.March['31'].type.push(obj[key]['31'].symptom.type);
-                                calendar.MArch['31'].notes.push(obj[key]['31'].symptom.notes); 
+                                calendar.MArch['31'].notes.push(obj[key]['31'].symptom.notes);
                              }
                              if ( newKey === '01' ){
                                 calendar.March['1'].type.push(obj[key]['01'].symptom.type);
-                                calendar.MArch['1'].notes.push(obj[key]['01'].symptom.notes); 
+                                calendar.MArch['1'].notes.push(obj[key]['01'].symptom.notes);
                              }
                              if ( newKey === '02' ){
                                 calendar.March['2'].type.push(obj[key]['02'].symptom.type);
-                                calendar.MArch['2'].notes.push(obj[key]['02'].symptom.notes); 
+                                calendar.MArch['2'].notes.push(obj[key]['02'].symptom.notes);
                              }
                              if ( newKey === '03' ){
                                 calendar.March['3'].type.push(obj[key]['03'].symptom.type);
-                                calendar.MArch['3'].notes.push(obj[key]['03'].symptom.notes); 
+                                calendar.MArch['3'].notes.push(obj[key]['03'].symptom.notes);
                              }
                              if ( newKey === '04' ){
                                 calendar.March['4'].type.push(obj[key]['04'].symptom.type);
-                                calendar.MArch['4'].notes.push(obj[key]['04'].symptom.notes); 
+                                calendar.MArch['4'].notes.push(obj[key]['04'].symptom.notes);
                              }
                              if ( newKey === '05' ){
                                 calendar.March['5'].type.push(obj[key]['05'].symptom.type);
-                                calendar.MArch['5'].notes.push(obj[key]['05'].symptom.notes); 
+                                calendar.MArch['5'].notes.push(obj[key]['05'].symptom.notes);
                              }
                              if ( newKey === '06' ){
                                 calendar.March['6'].type.push(obj[key]['06'].symptom.type);
-                                calendar.MArch['6'].notes.push(obj[key]['06'].symptom.notes); 
+                                calendar.MArch['6'].notes.push(obj[key]['06'].symptom.notes);
                              }
                              if ( newKey === '07' ){
                                 calendar.March['7'].type.push(obj[key]['07'].symptom.type);
-                                calendar.MArch['7'].notes.push(obj[key]['07'].symptom.notes); 
+                                calendar.MArch['7'].notes.push(obj[key]['07'].symptom.notes);
                              }
                              if ( newKey === '08' ){
                                 calendar.March['8'].type.push(obj[key]['08'].symptom.type);
-                                calendar.MArch['8'].notes.push(obj[key]['08'].symptom.notes); 
+                                calendar.MArch['8'].notes.push(obj[key]['08'].symptom.notes);
                              }
                              if ( newKey === '09' ){
                                 calendar.March['9'].type.push(obj[key]['09'].symptom.type);
-                                calendar.MArch['9'].notes.push(obj[key]['09'].symptom.notes); 
+                                calendar.MArch['9'].notes.push(obj[key]['09'].symptom.notes);
                              }
                              if ( newKey === '10' ){
                                 calendar.March['10'].type.push(obj[key]['10'].symptom.type);
-                                calendar.MArch['10'].notes.push(obj[key]['10'].symptom.notes); 
+                                calendar.MArch['10'].notes.push(obj[key]['10'].symptom.notes);
                              }
                              if ( newKey === '11' ){
                                 calendar.March['11'].type.push(obj[key]['11'].symptom.type);
-                                calendar.MArch['11'].notes.push(obj[key]['11'].symptom.notes); 
+                                calendar.MArch['11'].notes.push(obj[key]['11'].symptom.notes);
                              }
                              if ( newKey === '12' ){
                                 calendar.March['12'].type.push(obj[key]['12'].symptom.type);
-                                calendar.MArch['12'].notes.push(obj[key]['12'].symptom.notes); 
+                                calendar.MArch['12'].notes.push(obj[key]['12'].symptom.notes);
                              }
                              if ( newKey === '13' ){
                                 calendar.March['13'].type.push(obj[key]['13'].symptom.type);
-                                calendar.MArch['13'].notes.push(obj[key]['13'].symptom.notes); 
+                                calendar.MArch['13'].notes.push(obj[key]['13'].symptom.notes);
                              }
                              if ( newKey === '14' ){
                                 calendar.March['14'].type.push(obj[key]['14'].symptom.type);
-                                calendar.MArch['14'].notes.push(obj[key]['14'].symptom.notes); 
+                                calendar.MArch['14'].notes.push(obj[key]['14'].symptom.notes);
                              }
                              if ( newKey === '15' ){
                                 calendar.March['15'].type.push(obj[key]['15'].symptom.type);
-                                calendar.MArch['15'].notes.push(obj[key]['15'].symptom.notes); 
+                                calendar.MArch['15'].notes.push(obj[key]['15'].symptom.notes);
                              }
                              if ( newKey === '16' ){
                                 calendar.March['16'].type.push(obj[key]['16'].symptom.type);
-                                calendar.MArch['16'].notes.push(obj[key]['16'].symptom.notes); 
+                                calendar.MArch['16'].notes.push(obj[key]['16'].symptom.notes);
                              }
                              if ( newKey === '17' ){
                                 calendar.March['17'].type.push(obj[key]['17'].symptom.type);
-                                calendar.MArch['17'].notes.push(obj[key]['17'].symptom.notes); 
+                                calendar.MArch['17'].notes.push(obj[key]['17'].symptom.notes);
                              }
                              if ( newKey === '18' ){
                                 calendar.March['18'].type.push(obj[key]['18'].symptom.type);
-                                calendar.MArch['18'].notes.push(obj[key]['18'].symptom.notes); 
+                                calendar.MArch['18'].notes.push(obj[key]['18'].symptom.notes);
                              }
                              if ( newKey === '19' ){
                                 calendar.March['19'].type.push(obj[key]['19'].symptom.type);
-                                calendar.MArch['19'].notes.push(obj[key]['19'].symptom.notes); 
+                                calendar.MArch['19'].notes.push(obj[key]['19'].symptom.notes);
                              }
                              if ( newKey === '20' ){
                                 calendar.March['20'].type.push(obj[key]['20'].symptom.type);
-                                calendar.MArch['20'].notes.push(obj[key]['20'].symptom.notes); 
+                                calendar.MArch['20'].notes.push(obj[key]['20'].symptom.notes);
                              }
                              if ( newKey === '21' ){
                                 calendar.March['21'].type.push(obj[key]['21'].symptom.type);
-                                calendar.MArch['21'].notes.push(obj[key]['21'].symptom.notes); 
+                                calendar.MArch['21'].notes.push(obj[key]['21'].symptom.notes);
                              }
                              if ( newKey === '22' ){
                                 calendar.March['22'].type.push(obj[key]['22'].symptom.type);
-                                calendar.MArch['22'].notes.push(obj[key]['22'].symptom.notes); 
+                                calendar.MArch['22'].notes.push(obj[key]['22'].symptom.notes);
                              }
                              if ( newKey === '23' ){
                                 calendar.March['23'].type.push(obj[key]['23'].symptom.type);
-                                calendar.MArch['23'].notes.push(obj[key]['23'].symptom.notes); 
+                                calendar.MArch['23'].notes.push(obj[key]['23'].symptom.notes);
                              }
                              if ( newKey === '24' ){
                                 calendar.March['24'].type.push(obj[key]['24'].symptom.type);
-                                calendar.MArch['24'].notes.push(obj[key]['24'].symptom.notes); 
+                                calendar.MArch['24'].notes.push(obj[key]['24'].symptom.notes);
                              }
                              if ( newKey === '25' ){
                                 calendar.March['25'].type.push(obj[key]['25'].symptom.type);
-                                calendar.MArch['25'].notes.push(obj[key]['25'].symptom.notes); 
+                                calendar.MArch['25'].notes.push(obj[key]['25'].symptom.notes);
                              }
                              if ( newKey === '26' ){
                                 calendar.March['26'].type.push(obj[key]['26'].symptom.type);
-                                calendar.MArch['26'].notes.push(obj[key]['26'].symptom.notes); 
+                                calendar.MArch['26'].notes.push(obj[key]['26'].symptom.notes);
                              }
                              if ( newKey === '28' ){
                                 calendar.March['28'].type.push(obj[key]['28'].symptom.type);
-                                calendar.MArch['28'].notes.push(obj[key]['28'].symptom.notes); 
+                                calendar.MArch['28'].notes.push(obj[key]['28'].symptom.notes);
                              }
                              if ( newKey === '29' ){
                                 calendar.March['29'].type.push(obj[key]['29'].symptom.type);
-                                calendar.MArch['29'].notes.push(obj[key]['29'].symptom.notes); 
+                                calendar.MArch['29'].notes.push(obj[key]['29'].symptom.notes);
                              }
                              if ( newKey === '30' ){
                                 calendar.March['30'].type.push(obj[key]['30'].symptom.type);
-                                calendar.MArch['30'].notes.push(obj[key]['30'].symptom.notes); 
-                             } 
-                        } 
+                                calendar.MArch['30'].notes.push(obj[key]['30'].symptom.notes);
+                             }
+                        }
                     }
 
                     if (key === '04'){
                         for ( let newKey in obj[key]){
                             if ( newKey === '01' ){
                                 calendar.April['1'].type.push(obj[key]['01'].symptom.type);
-                                calendar.April['1'].notes.push(obj[key]['01'].symptom.notes); 
+                                calendar.April['1'].notes.push(obj[key]['01'].symptom.notes);
                              }
-                        } 
+                        }
                     }
                 }
-               
+
             });
-        
+
         return calendar;
-        
+
         }
 
         console.log(data(result.rows))
-        res.send(data(result.rows)); 
+        res.send(data(result.rows));
     });
-}
-/** 
+
+
+/**
  * Function Name: updateSymptom
  * Description: updateSymptoms by changing symptom type value and new notes for all table (query needs to be refomated to only change on type)
  * Parameters:
@@ -2174,12 +2184,14 @@ let   calendar = {
  *   @param res - http.ServerResponse
  * * Error Conditions:
  *   If the database fails to find return error
- * Return Value: 
+ * Return Value:
  *   @return None
  */
+//        check funtionality
 symptomController.updateSymptom = (req, res, next) => {
-    const { type, notes } = req.body;
-    const updateSympTxt = (`UPDATE "symptoms" SET type='${type}', notes= '${notes}'`);
+    const { type } = req.body;
+    const updateSympTxt = (`UPDATE symptoms SET type='${type}'`);
+    //unable to read below - to add results to query to update/remove
     db.query(updateSympTxt, (err) => {
         if (err) {
             throw new Error('DB QUERY FAILED TO UPDATE NEW SYMPTOM TO DATABASE', err);
@@ -2188,7 +2200,7 @@ symptomController.updateSymptom = (req, res, next) => {
     });
 }
 
-/** 
+/**
  * Function Name: deletesymptom
  * Description: delteSymptom by selecting type and notes
  * Parameters:
@@ -2197,11 +2209,13 @@ symptomController.updateSymptom = (req, res, next) => {
  *   @param res - http.ServerResponse
  *  * Error Conditions:
  *   If the database fails to find return error
- * Return Value: 
+ * Return Value:
  *   @return None
  */
+
+//        Check functionality
 symptomController.deleteSymptom = (req, res, next) => {
-    const { type, notes } = req.body;
+    const { type } = req.body;
     const deleteSympTxt = (`DELETE FROM "symptoms" WHERE type='${type}' AND notes='${notes}'`);
     db.query(deleteSympTxt, (err) => {
         if (err) {
@@ -2209,6 +2223,7 @@ symptomController.deleteSymptom = (req, res, next) => {
         }
         res.send('ok');
     });
+  }
 }
 
 module.exports = symptomController;
