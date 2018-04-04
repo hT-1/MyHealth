@@ -5,7 +5,7 @@ body {
 }
 
 .header{
-  height:75px;
+  height:4em;
   background-color: dodgerblue;
   display: flex;
   align-items: center;
@@ -132,4 +132,24 @@ h2 {
 .navBar {
   display: flex;
   flex-direction: row;
+}
+
+.barContainer {
+  display: inline-block;
+  padding-top: 0px;
+  /* border: 1px solid red; */
+  margin: 0px;
+}
+.barTitle {
+  display: block;
+  padding-top: 0px;
+  /* border: 1px solid red; */
+  margin: 1em;
+}
+.XAxis text {
+  transform: rotate(-45deg);
+  text-anchor: end;
+}
+.bar {
+  
 }

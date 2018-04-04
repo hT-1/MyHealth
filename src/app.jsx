@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
 import actionCreator from "./Actions/actionCreators";
-import Dashboard from './Components/Dashboard.jsx';
+
+import Profile from './Components/Profile.jsx';
 import Header from './Components/Header.jsx';
 
 const mapStateToProps = store => ({
@@ -16,7 +17,7 @@ class App extends Component {
         return (
             <div className="mainContainer">
                 <Header  month={this.props.currentMonth }/>
-                <Dashboard />
+                <Profile />
             </div>
         )
     }
