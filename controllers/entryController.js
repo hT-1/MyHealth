@@ -55,9 +55,12 @@ entryController.readFrequency = (req, res, next) => {
 }
 
   entryController.updateEntry = (req, res, next) => {
-    console.log("entryController update controller")
+    const { symptom, user_id, notes, entry_date } = req.body;
+          //adding for test
+    const updateEntryTxt = (`UPDATE entry SET symptom = '${symptom}', notes = '${notes}', entry_date = '${entry_date}'`) 
   }
 
+      //deleted in Elephant through Postman
   entryController.deleteEntry = (req, res, next) => {
     console.log("entryController delete controller")
     //check and updte below function for del entry
