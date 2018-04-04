@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import NavBar from '../Components/navBar.jsx';
-import InfoBox from '../Components/infoBox.jsx';
+import Typography from 'material-ui/Typography';
+import AddCircle from 'material-ui-icons/AddCircle';
+import TextField from 'material-ui/TextField';
 import ExpansionPanel, {
     ExpansionPanelDetails,
     ExpansionPanelSummary,
   } from 'material-ui/ExpansionPanel';
-  import Typography from 'material-ui/Typography';
-  import AddCircle from 'material-ui-icons/AddCircle';
-  import TextField from 'material-ui/TextField';
+import NavBar from '../Components/navBar.jsx';
+import InfoBox from '../Components/infoBox.jsx';
 
 const mapStateToProps = store => ({
 entries: store.data.entries,
