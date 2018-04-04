@@ -5,8 +5,10 @@ entryController.createEntry = (req, res, next) => {
     console.log(req.body);
     const { symptom, notes, entry_date } = req.body;
         //Should post info from req.body to db
+        //Test functionality with Where condition
     const userEntry = (`INSERT INTO entry (symptom, user_id, notes, entry_date)
-    //                     VALUES ('req.body.symptom', req.body.id, 'req.body.notes', 'req.body.entry_date');`);
+                         VALUES ('symptom', user_id, 'notes', 'entry_date');`)
+
         //Tested v will add new entry to entry table
     // const addusertesttest = (`INSERT INTO entry (symptom, user_id, notes, entry_date)
     //                     VALUES ('restlessnes', 7777, 'testing test', '2017-09-06');`);
@@ -22,22 +24,35 @@ entryController.createEntry = (req, res, next) => {
     });
 };
 
+entryController.readAllOnDate = (req, res, next) => {
+    const { symptom } = req.body;
+    console.log('entryCont, readReadAll', req.body)
+    //GET request to retrieve all symptoms for a given date
+    const readEntryTxt = (`SELECT * FROM entry WHERE entry_date = 'req.body.entry_date';`);
+    console.log('entryController ln32', readEntryTxt)
+    db.query(readEntryTxt, (err,result) => {
+        if (err) {
+            throw new Error('DB QUERY FAILED TO read entry table', err);
+        }
+        res.send('success')
+    });
+};
 
-entryController.readEntry = (req, res, next) => {
-    const { symptom, user_id, notes, entry_date } = req.body;
+entryController.readFrequency = (req, res, next) => {
+    const { symptom, entry_date } = req.body;
     console.log('entCont, readEntry', req.body)
-    const readEntryTxt = (`SELECT symptom FROM entry where user_id = 1234;`);
-
+    //Takes start and end date for frequency of symptoms for D3 chart
+    const readEntryTxt = (`SELECT * FROM entry WHERE entry_date >= '2017-02-01' AND entry_date <  '2017-08-01';`);
+    //Tested in ElephantSQL with success for date. No need for UNIX!!!!
+    //const readEntryTxt = (`SELECT * FROM entry WHERE entry_date >= '2017-02-01' AND entry_date <  '2017-08-01';`);
     console.log('entryController ln26', readEntryTxt)
     db.query(readEntryTxt, (err,result) => {
         if (err) {
             throw new Error('DB QUERY FAILED TO read entry table', err);
         }
     })
-    let resArr = []
-    let resObj = {}
     res.send('success')
-  }
+}
 
   entryController.updateEntry = (req, res, next) => {
     console.log("entryController update controller")
@@ -46,8 +61,9 @@ entryController.readEntry = (req, res, next) => {
   entryController.deleteEntry = (req, res, next) => {
     console.log("entryController delete controller")
     //check and updte below function for del entry
-    const { type } = req.body;
-    const deleteEntryTxt = (`DELETE FROM "entry" WHERE symptom='${symptom}' AND notes='${notes}'`);
+    const { symptom, notes, entry_date } = req.body;
+    const deleteEntryTxt = (`DELETE FROM "entry" WHERE symptom='${symptom}' AND notes='${notes}' AND entry_date='${entry_date}'`);
+    console.log('to be deleted', deleteEntryTxt)
     db.query(deleteEntryTxt, (err) => {
         if (err) {
             throw new Error('DB QUERY FAILED TO DELETE FROM DATABASE', err);

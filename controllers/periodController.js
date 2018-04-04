@@ -25,7 +25,7 @@ periodController.createPeriod = (req, res, next) => {
     const { start, end, notes } = req.body;
     const addnewPeriod = (`INSERT INTO newPeriod (start, end, notes)
                         VALUES ('start', 'end', 'notes' );`);
-    db.query(addSympTxt, (err) => {
+    db.query(addnewPeriod, (err) => {
         if (err) {
             throw new Error('DB QUERY FAILED TO ADD NEW period TO DATABASE', err);
         }
@@ -2126,13 +2126,9 @@ periodController.readPeriod = (req, res, next) => {
                         }
                     }
                 }
-
             });
-
         return calendar;
-
         }
-
         // console.log(result.rows)
         res.send(data(result.rows));
     });
@@ -2151,17 +2147,17 @@ periodController.readPeriod = (req, res, next) => {
  * Return Value:
  *   @return Response of success
  */
-periodController.updatePeriod = (req, res, next) => {
-    const { period_length, cycle_length, notes } = req.body;
-    console.log('hello')
-    const updateSympTxt = (`UPDATE "period" SET period_length='${period_length}', cycle_length='${cycle_length}' notes= '${notes}'`);
-    db.query(updateSympTxt, (err) => {
-        if (err) {
-            throw new Error('DB QUERY FAILED TO UPDATE PERIOD VALUES TO DATABASE', err);
-        }
-        res.send('Success updating period entry');
-    });
-}
+// periodController.updatePeriod = (req, res, next) => {
+//     const { period_length, cycle_length, notes } = req.body;
+//     console.log('hello')
+//     const updateSympTxt = (`UPDATE "period" SET period_length='${period_length}', cycle_length='${cycle_length}' notes= '${notes}'`);
+//     db.query(updateSympTxt, (err) => {
+//         if (err) {
+//             throw new Error('DB QUERY FAILED TO UPDATE PERIOD VALUES TO DATABASE', err);
+//         }
+//         res.send('Success updating period entry');
+//     });
+// }
 
 /**
  * Function Name: deletePeriod
@@ -2176,16 +2172,16 @@ periodController.updatePeriod = (req, res, next) => {
  * Return Value:
  *   @return Response of success
  */
-periodController.deletePeriod = (req, res, next) => {
-    const {period_length, cycle_length, notes } = req.body;
-    console.log('look here')
-    const deleteSympTxt = (`DELETE FROM "period" WHERE period_length='${period_length}' AND cycle_length='${cycle_length}' AND notes= '${notes}'`);
-    db.query(deleteSympTxt, (err) => {
-        if (err) {
-            throw new Error('DB QUERY FAILED TO DELETE PERIOD FROM DATABASE', err);
-        }
-        res.send('Success deleting period entry');
-    });
-}
+//periodController.deletePeriod = (req, res, next) => {
+//     const {period_length, cycle_length, notes } = req.body;
+//     console.log('look here')
+//     const deleteSympTxt = (`DELETE FROM "period" WHERE period_length='${period_length}' AND cycle_length='${cycle_length}' AND notes= '${notes}'`);
+//     db.query(deleteSympTxt, (err) => {
+//         if (err) {
+//             throw new Error('DB QUERY FAILED TO DELETE PERIOD FROM DATABASE', err);
+//         }
+//         res.send('Success deleting period entry');
+//     });
+// }
 
 module.exports = periodController;

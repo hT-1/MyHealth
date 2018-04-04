@@ -21,7 +21,7 @@ const app = express();
 
 //from app.js
 // const passportSetup = require('./config/passport-setup');
-// const keys = require('./config/keys');
+// const keys = require('./cogit hecknfig/keys');
 app.set('view engine', 'ejs');
 
 app.use('/auth', authRoutes);
@@ -479,11 +479,11 @@ app.get('/', (req, res) => {
 app.get('/style.css', (req, res) => {
     res.sendFile(path.join(__dirname, './views/style.css'));
   })
-  app.get('/login', (req, res) => {
+app.get('/login', (req, res) => {
     res.render('login');
   })
 
-  app.get('/auth', authRoutes);
+app.get('/auth', authRoutes);
 
 
 app.post('/', (req, res) => {
@@ -509,19 +509,25 @@ req.session = null;
 res.redirect('/logout');
 })
 
+// app.get('/period/readByDate', periodController.readPeriod);
+// app.get('/entry/readAll/', entryController.readEntry);
+// app.get('/symptom/readAllOnDate', symptomController.readAllOnDate);
+// app.get('/symptom/readFrequency', symptomController.readFrequency);
+
 app.post('/signup', userController.createUser);
 app.post('/period/create', periodController.createPeriod);
-app.post('/period/readAll', periodController.readPeriod);
-app.post('/period/update/', periodController.updatePeriod);
-app.post('/period/delete/', periodController.deletePeriod);
+//app.post('/period/readAll', periodController.readPeriod);
+// app.post('/period/update/', periodController.updatePeriod);
+// app.post('/period/delete/', periodController.deletePeriod);
 app.post('/entry/create/', entryController.createEntry);
-app.post('/entry/readAll/', entryController.readEntry);
+//app.post('/entry/readAll/', entryController.readEntry);
 app.post('/entry/update/', entryController.updateEntry);
 app.post('/entry/delete/', entryController.deleteEntry);
 app.post('/symptom/create', symptomController.createSymptom);
-app.post('/symptom/readAll', symptomController.readSymptom);
+//app.post('/symptom/readAll', symptomController.readSymptom);
 //app.post('/symptom/update/', symptomController.updateSymptom);
 //app.post('/symptom/delete/', symptomController.deleteSymptom);
+app.post('/user/create/', userController.createUser);
 app.post('/export/csv', exportController.getSymptoms,
                         exportController.exportCSV);
 

@@ -27,7 +27,7 @@ db.query(symptom, (err, success) => {
 const user = `CREATE TABLE IF NOT EXISTS "user" (
   "_id"         SERIAL NOT NULL,
   "username"    VARCHAR NOT NULL,
-  "Google"      VARCHAR NOT NULL,
+  "google"      VARCHAR NOT NULL,
   "created_at"  DATE NOT NULL
 );`;
 
