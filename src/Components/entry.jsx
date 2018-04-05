@@ -26,12 +26,12 @@ const Entry = props => {
     <Card>
         <CardContent>
           <div className='symptomLabel'>
-            <span className='lbl'>Symptom:</span>
-            <span>{props.data.type}</span>
+            <div className='lbl'>Symptom:</div>
+            <div className='entrySection'>{props.data.type}</div>
           </div>
           <div className='noteLabel'>
-            <span className='lbl'>Notes:</span>
-            <span className='noteSpan'>{props.data.notes}</span>
+            <div className='lbl'>Notes:</div>
+            <div className='entrySection'>{props.data.notes}</div>
           </div>
         </CardContent>
         <CardActions>

@@ -157,22 +157,32 @@ h2 {
   padding: 15px;
   font-size: 15px;
 }
+.footer a {
+  text-decoration: none;
+  color: black;
+  transition: all 2s;
+}
+.footer a:hover {
+  color:dodgerblue;
+  font-size: 2em;
+}
 .MuiCardContent-root-160{
   display:grid;
   grid-template-rows: 1fr 1fr;
-  grid-gap: 15px;
+  grid-gap: 10px;
 }
 
-.symptomLabel, .noteLabel {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.noteSpan{
+.entrySection{
   width: 75%;
+  padding-left: 25px;
+  line-height: 20px;
 }
 .lbl{
   font-weight: bold;
+  width: calc(25% - 25px);
+  margin-right: 25px;
+  margin-bottom: 10px;
+  line-height: 20px;
 }
 button a{
   color:white;

@@ -30,10 +30,10 @@ const exportController = {};
  *   @return Response of success
  */
 exportController.getSymptoms = (req, res, next) => {
-    fs.unlink('MySymptom.csv', (err) => {
-        if (err) throw err;
-        console.log('path/file.txt was deleted');
-      });
+    // fs.unlink('MySymptom.csv', (err) => {
+    //     if (err) throw err;
+    //     console.log('path/file.txt was deleted');
+    //   });
 
     let user_id = req.body.user_id;
     console.log(user_id);

@@ -7,6 +7,9 @@ import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import blue from 'material-ui/colors/blue';
 import { Link } from 'react-router-dom';
+import Download from 'material-ui-icons/VerticalAlignBottom';
+const downloadsjs = require("downloadjs")
+
 const Header = props => {
     return (
     <div className='header'>
@@ -17,7 +20,9 @@ const Header = props => {
           </Typography>
           <Button color="inherit"><Link to="/" >Home</Link></Button>
           <Button color="inherit"><Link to="/profile" >PROFILE</Link></Button>
-          <Button color="inherit">EXPORT</Button>
+          <Button color="inherit" onClick={()=>{ downloadsjs('/export/csv')}} >EXPORT</Button>
+         <Button color="inherit" onClick={()=>{ downloadsjs('MySymptom.csv')}} ><Download /></Button>
+          <Button color="inherit" href="mailto:yourDoctor@gmail.com?subject=My Symptoms&body=Hello,%0A I am attaching a file with all my symptom data. I hope that it's useful. %0A Thank you for your time, and attention! %0A &attachment=/Users/academieange/Downloads/csv\ \(8\).html">EMAIL</Button>
         </Toolbar>
       </AppBar>
     </div>

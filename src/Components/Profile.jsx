@@ -12,9 +12,9 @@ let dataSymptomsPerRange = [
     // {symptom: 'Breast Swelling', frequency: 32},
     // {symptom: 'Sadness', frequency: 28},
     // {symptom: 'Moody', frequency: 12},
-    {symptom: 'Dizziness', frequency: 450},
-    {symptom: 'Libido+', frequency: 67},
-    {symptom: 'Food Cravings', frequency: 76},
+    {symptom: 'Dizziness', frequency: 10},
+    {symptom: 'Libido+', frequency: 45},
+    {symptom: 'Food Cravings', frequency: 60},
     {symptom: 'Night Sweats', frequency: 32},
     {symptom: 'Acne', frequency: 43},
     {symptom: 'Bloating', frequency: 34},
@@ -30,7 +30,7 @@ let dataSymptomsPerRange = [
     // {symptom: 'Joint Pain', frequency: 38},
     // {symptom: 'Flatulence', frequency: 87},
     // {symptom: 'BreastTender', frequency: 100},
-    {symptom: 'CryingSpells', frequency: 74}]
+    {symptom: 'Crying Spells', frequency: 60}]
 
     let dataPeriodLength = [
         {
@@ -79,7 +79,7 @@ const Profile = props => {
     // // width prop is dynamic based on length of data array
     return (
         <div className="profile">
-            <h1 className="barTitle" style={{color: "#13728F"}} > Symptom Level Comparison from 'Start Date' to 'End Date' </h1>
+            <h1 className="barTitle" style={{color: "#13728F"}} > Symptom Level Comparison from 'Jan 01 2018' to 'Apr 05 2018' </h1>
             <ReactChart width={100*dataSymptomsPerRange.length-1} height={400}  data={dataSymptomsPerRange} />
             <h1 className="barTitle" style={{color: "#13728F"}} > Period Length </h1>
             <ReactChart width={100*dataPeriodLength.length-1} height={400}  data={dataPeriodLength} />
