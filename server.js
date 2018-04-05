@@ -509,10 +509,10 @@ req.session = null;
 res.redirect('/logout');
 })
 
-// app.get('/period/readByDate', periodController.readPeriod);
-// app.get('/entry/readAll/', entryController.readEntry);
-// app.get('/symptom/readAllOnDate', symptomController.readAllOnDate);
-// app.get('/symptom/readFrequency', symptomController.readFrequency);
+//app.get('/period/readByDate', periodController.readPeriod);
+app.get('/entry/:user_id/:date', entryController.readAllOnDate);
+//app.get('/symptom/readAllOnDate', symptomController.readAllOnDate);
+//app.get('/symptom/readFrequency', symptomController.readFrequency);
 
 app.post('/signup', userController.createUser);
 app.post('/period/create', periodController.createPeriod);
@@ -523,7 +523,7 @@ app.post('/entry/create/', entryController.createEntry);
 //app.post('/entry/readAll/', entryController.readEntry);
 app.post('/entry/update/', entryController.updateEntry);
 app.post('/entry/delete/', entryController.deleteEntry);
-app.post('/symptom/create', symptomController.createSymptom);
+app.post('/symptom/create/', symptomController.createSymptom);
 //app.post('/symptom/readAll', symptomController.readSymptom);
 //app.post('/symptom/update/', symptomController.updateSymptom);
 //app.post('/symptom/delete/', symptomController.deleteSymptom);
