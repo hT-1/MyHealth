@@ -10,7 +10,7 @@ const NavBar = props => {
         // how do we update the store from a presentation component?
         <div className="navBar">
             <button>Home</button>
-            <button>Export</button>
+            <button>Export </button>
         </div>
     )
 }

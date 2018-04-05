@@ -35,15 +35,14 @@ class ReactChart extends React.Component {
       // array to hold all instances of Bars
       let bars = []
       // margin for bottom x-axis current height is 500;
-      let bottom = 450
+      let bottom = 350
       // iterating over data array for data objects and calling BAR class to create bar visulaization
       data.forEach((objFromDataArr, index) => {
-        bars.push(<Bar key={index} x={x(objFromDataArr.symptom)} y={bottom - 6 - (height - y(objFromDataArr.frequency))} width={20} height={height - y(objFromDataArr.frequency)} />)
+        bars.push(<Bar key={index} x={x(objFromDataArr.symptom)} y={bottom - 6 - (height - y(objFromDataArr.frequency))} width={40} height={height - y(objFromDataArr.frequency)} />)
       })
   
       return (
         <div className="barContainer">
-        <h1 className="barTitle" style={{color: "#13728F"}} > Symptom Level Comparison from 'Start Date' to 'End Date' </h1>
         <svg width={this.props.width} height={this.props.height}>
             <YAxis  y={40} labels={y.ticks().reverse()} start={ 15 } end={ height } />
             <g className="chart" transform={`translate(${margin.left},${margin.top})`}>

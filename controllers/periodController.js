@@ -72,7 +72,7 @@ periodController.periodLength = (req, res, next) => {
            let values = Object.values(newobj);
            for (let i = 0; i < keys.length; i++){
                let tempKey = keys[i];
-               formattedData.push({[tempKey]:values[i]});
+               formattedData.push({symptom:keys[i], frequency:values[i] });
            }
             return  formattedData;
         }
@@ -100,20 +100,21 @@ periodController.periodCycle = (req, res, next) => {
                 
             })
 
-           let keys = Object.keys(newobj);
-           keys.forEach((el, index) => {
+           let key = Object.keys(newobj);
+           key.forEach((el, index) => {
                let oneDay = 24*60*60*1000;
                let firstDate = new Date(el);
-               let secondDate = new Date ( keys[index +1]);
+               let secondDate = new Date ( key[index +1]);
                 newobj[el] = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
            });
 
            let values = Object.values(newobj);
+           let keys = Object.keys(newobj);
            for (let i = 0; i < keys.length; i++){
                let tempKey = keys[i];
-               formattedData.push({[tempKey]:values[i]});
+               formattedData.push({symptom:keys[i], frequency:values[i] });
            }
-            return  newobj;
+            return  formattedData;
         }
         
         res.send(frequencyOfNotes(result.rows));
