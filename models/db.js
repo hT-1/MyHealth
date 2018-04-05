@@ -37,16 +37,16 @@ db.query(user, (err, success) => {
     }
 });
 
-const newPeriod = `CREATE TABLE IF NOT EXISTS "newPeriod" (
+const newPeriod = `CREATE TABLE IF NOT EXISTS "new_period" (
     "user_id"        SERIAL PRIMARY KEY,
-    "start"          DATE,
-    "end"            DATE,
+    "start"          VARCHAR,
+    "end"            VARCHAR,
     "notes"          VARCHAR
 );`;
 
 db.query(newPeriod, (err, success) => {
     if (err) {
-        throw new Error('DB QUERY FAILED TO CREATE newPeriod TABLE', err);
+        throw new Error('DB QUERY FAILED TO CREATE new_period TABLE', err);
     }
 });
 
