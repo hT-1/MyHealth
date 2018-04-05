@@ -25,13 +25,14 @@ entryController.createEntry = (req, res, next) => {
 };
 
 entryController.readAllOnDate = (req, res, next) => {
-    const { symptom } = req.body;
-    const queryArr = [];
-    console.log('entryCont, readAll', req.body)
+    // const { entry_date, symptom, notes } = req.body;
+    // const queryArr = [];
+    console.log(req.params)
     //GET request to retrieve all symptoms/notes for date range. Tested in Elephant, not POSTMAN
     const readEntryTxt = (`SELECT entry_date, symptom, notes
-                          FROM "entry" INNER JOIN "user" ON (user_id = 5555)
-                          WHERE entry_date >= '2017-02-01';`);
+                          FROM "entry"
+                          WHERE entry_date >= '${req.params.date}'
+                          AND user_id = '${req.params.user_id}';`);
     console.log('entryController ln32', readEntryTxt)
     db.query(readEntryTxt, (err,result) => {
         if (err) {
@@ -49,7 +50,7 @@ entryController.readAllOnDate = (req, res, next) => {
             }
             else if (entries[date]) {
               entries[date].push({"type":array[i].symptom, "notes":array[i].notes})
-            }            
+            }
         }
         return entries;
     }

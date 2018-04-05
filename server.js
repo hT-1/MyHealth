@@ -510,7 +510,7 @@ res.redirect('/logout');
 })
 
 //app.get('/period/readByDate', periodController.readPeriod);
-app.get('/entry/read/', entryController.readAllOnDate);
+app.get('/entry/:user_id/:date', entryController.readAllOnDate);
 //app.get('/symptom/readAllOnDate', symptomController.readAllOnDate);
 //app.get('/symptom/readFrequency', symptomController.readFrequency);
 
