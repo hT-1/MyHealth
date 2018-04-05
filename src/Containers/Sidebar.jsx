@@ -39,6 +39,36 @@ class Sidebar extends Component {
           symptom: ''
         });
       };
+      submitStuff = () => {
+          if(this.state.symptom === '' || this.state.notes === ''){
+              console.log('Not enough Data.  Jake gives you 👎');
+          } else {
+            const symptom = {
+                symptom: this.state.symptom,
+                notes: this.state.notes,
+                entry_date: this.props.date,
+                user_id: 1
+            }
+            console.log(symptom);
+            fetch('http://localhost:3000/entry/create',{
+                method: 'POST', 
+                mode: 'cors',
+                headers: new Headers({
+                    'Content-Type': 'Application/json'
+                }),
+                body: JSON.stringify(symptom)
+            })
+            .then(res => { 
+                console.log('👍')
+                this.props.actions.addEntries(symptom);
+                this.setState({
+                    expanded: false,
+                  });
+                }
+            )
+            .catch(err => console.log(err));
+        }
+      }
       handleTyping = name => event => {
         this.setState({
           [name]: event.target.value,
@@ -59,17 +89,12 @@ class Sidebar extends Component {
                     <ExpansionPanelDetails>
                         <div className="myForm">
                             <TextField
-                            id="select-currency"
+                            id="select-symptom"
                             select
                             label="Select"
                             className="symptomList"
                             value={this.state.symptom}
                             onChange={this.handleTyping('symptom')}
-                            // SelectProps={{
-                            //     MenuProps: {
-                            //     className: classes.menu,
-                            //     },
-                            // }}
                             helperText="Please select your symptom"
                             margin="normal"
                             >
@@ -88,13 +113,13 @@ class Sidebar extends Component {
                                 onChange={this.handleTyping('notes')}
                                 margin="normal"
                             />
-                            <Button variant="raised" color="primary" className='symptomSubmit'>
+                            <Button variant="raised" color="primary" className='symptomSubmit' onClick={() => this.submitStuff()}>
                                 Add Symptom
                             </Button>
                         </div>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
-                <InfoBox entries={this.props.entries}/>
+                <InfoBox entries={this.props.entries} delete={this.props.actions.deleteEntry} date={this.props.date}/>
             </div>
         )
     }

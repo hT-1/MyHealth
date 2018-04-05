@@ -2,34 +2,6 @@ import * as types from "../Constants/actionTypes.js";
 import * as actions from "../Actions/actionCreators";
 import moment from "moment";
 
-function getMonth(mo) {
-  switch (mo) {
-    case 0:
-      return "January";
-    case 1:
-      return "February";
-    case 2:
-      return "March";
-    case 3:
-      return "April";
-    case 4:
-      return "May";
-    case 5:
-      return "June";
-    case 6:
-      return "July";
-    case 7:
-      return "August";
-    case 8:
-      return "September";
-    case 9:
-      return "October";
-    case 10:
-      return "November";
-    case 11:
-      return "December";
-  }
-}
 const getCalendar = () => {
   const startWeek = moment()
     .startOf("month")
@@ -67,7 +39,7 @@ const getCalendar = () => {
   return item;
 };
 let initialState = {
-  currMonth: "April",
+  currMonth: moment().format('MMMM'),
   calendar: getCalendar(),
   entries:{
       "2018-04-01": [
@@ -162,30 +134,7 @@ let initialState = {
         }
       ]
     },
-  currentDate: "2018-04-02",
-  currentEntries: [
-    {
-      type: "Headache",
-      notes:
-        "Had a migraine most of the day but recovered around lunch time."
-    },
-    {
-      type: "Cramps",
-      notes: "Could barely stand upright for most of the day"
-    },
-    {
-      type: "Stomach Ache",
-      notes: "I think it was what I ate for lunch"
-    },
-    {
-      type: "Headache",
-      notes: "Woke up with a headache"
-    },
-    {
-      type: "Migraine",
-      notes: "Very sensitive to light today with a piercing migraine"
-    }
-  ],
+  currentDate: moment().format('YYYY-MM-DD'),
   symptoms: [
     { name: "Acne"},
     { name: "Anxiety"},
@@ -233,26 +182,75 @@ let initialState = {
 };
 
 function symptomReducer(state = initialState, action) {
+  let currentEntries;
+  let currentDate;
+  let entries;
+  let item;
   switch (action.type) {
     case types.SYNC_DB:
-      let obj = Object.assign({}, state);
-      obj = action.payload;
-      state = obj;
+    entries = action.data;
+    currentEntries = entries[state.currentDate];
       return {
-        ...state
+        ...state,
+        currentEntries,
+        entries
       };
-    case types .SELECT_ENTRIES:
-      let currentDate = action.date;
-      let currentEntries = state.entries[currentDate];
+    case types.SELECT_ENTRIES:
+      currentDate = action.date;
+      currentEntries = state.entries[currentDate];
       return {
         ...state,
         currentDate,
         currentEntries
-
       }
-    case types.ADD_ACTIVITY:
+    case types.ADD_ENTRY:
+      currentEntries = state.currentEntries;
+      entries = state.entries;
+      item = {
+        type: action.entry.symptom,
+        notes: action.entry.notes
+      }
+      if(entries[action.entry.entry_date]) {
+        entries[action.entry.entry_date].push(item);
+      } else {
+        entries[action.entry.entry_date] = [];
+        entries[action.entry.entry_date].push(item);
+      }
+      if(currentEntries) {
+        // Nothing if already exists
+      } else {
+        currentEntries = [];
+        currentEntries.push(item);
+      }
       return {
-        ...state
+        ...state,
+        currentEntries,
+        entries
+      };
+    case types.DELETE_ENTRY:
+    currentEntries = state.currentEntries;
+      entries = state.entries;
+      // currentEntries.push(item);
+     let items = entries[action.data.date];
+     for(let j = 0; j < currentEntries.length; j++){
+       if(currentEntries[j] === action.data.id){
+        currentEntries.splice(j, 1);
+       }
+     }
+      for(let i = 0; i < items.length; i++){
+        if(items[i].id === action.data.id){
+          items.splice(i, 1)
+        }
+      }
+      if(items.length > 0) {
+        entries[action.data.date] = items;
+      } else {
+        delete entries[action.data.date];
+      }
+      return {
+        ...state,
+        currentEntries,
+        entries
       };
     default:
       return state;

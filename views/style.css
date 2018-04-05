@@ -156,6 +156,25 @@ h2 {
   left: 0;
   padding: 15px;
   font-size: 15px;
+}
+.MuiCardContent-root-160{
+  display:grid;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 15px;
+}
 
-
+.symptomLabel, .noteLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.noteSpan{
+  width: 75%;
+}
+.lbl{
+  font-weight: bold;
+}
+button a{
+  color:white;
+  text-decoration:none;
 }

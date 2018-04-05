@@ -29,11 +29,10 @@ entryController.readAllOnDate = (req, res, next) => {
     // const queryArr = [];
     console.log(req.params)
     //GET request to retrieve all symptoms/notes for date range. Tested in Elephant, not POSTMAN
-    const readEntryTxt = (`SELECT entry_date, symptom, notes
+    const readEntryTxt = (`SELECT entry_date, symptom, notes, _id
                           FROM "entry"
                           WHERE entry_date >= '${req.params.date}'
                           AND user_id = '${req.params.user_id}';`);
-    console.log('entryController ln32', readEntryTxt)
     db.query(readEntryTxt, (err,result) => {
         if (err) {
             throw new Error('DB QUERY FAILED TO read entry table', err);
@@ -46,15 +45,15 @@ entryController.readAllOnDate = (req, res, next) => {
             var date = JSON.stringify(array[i]["entry_date"]).slice(1,11);
             if (!entries[date]){
               entries[date]=[];
-              entries[date].push({"type":array[i].symptom, "notes":array[i].notes})
+              entries[date].push({"id": array[i]._id, "type":array[i].symptom, "notes":array[i].notes})
             }
             else if (entries[date]) {
-              entries[date].push({"type":array[i].symptom, "notes":array[i].notes})
+              entries[date].push({"id": array[i]._id, "type":array[i].symptom, "notes":array[i].notes})
             }
         }
         return entries;
     }
-        res.send(sendFormat(result.rows))
+        res.json(sendFormat(result.rows))
     });
 };
 
@@ -82,16 +81,14 @@ entryController.readFrequency = (req, res, next) => {
 
       //deleted in Elephant through Postman
   entryController.deleteEntry = (req, res, next) => {
-    console.log("entryController delete controller")
     //check and updte below function for del entry
-    const { symptom, notes, entry_date } = req.body;
-    const deleteEntryTxt = (`DELETE FROM "entry" WHERE symptom='${symptom}' AND notes='${notes}' AND entry_date='${entry_date}'`);
-    console.log('to be deleted', deleteEntryTxt)
+    const id = req.params.id;
+    const deleteEntryTxt = (`DELETE FROM "entry" WHERE _id = ${id}`);
     db.query(deleteEntryTxt, (err) => {
         if (err) {
             throw new Error('DB QUERY FAILED TO DELETE FROM DATABASE', err);
         }
-        res.send('ok');
+        res.json({success: 'ok'});
     });
   }
 

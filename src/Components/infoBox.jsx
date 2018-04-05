@@ -7,14 +7,14 @@ const InfoBox = props => {
   let entries = [];
   if(props.entries){
     for(let i = 0; i < props.entries.length; i++) {
-      entries.push(<Entry data={props.entries[i]} key={i} />);
+      entries.push(<Entry data={props.entries[i]} key={i} delete={props.delete} date={props.date}/>);
     }
   } else {
    entries =
    <Card>
     <CardContent>
       <Typography variant="headline" component="h3">
-        No Data Today
+        No Symptoms Today
       </Typography>
     </CardContent>
  </Card>;

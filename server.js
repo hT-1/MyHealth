@@ -526,7 +526,7 @@ app.post('/period/cycle', periodController.periodCycle);
 app.post('/entry/create/', entryController.createEntry);
 //app.post('/entry/readAll/', entryController.readEntry);
 app.post('/entry/update/', entryController.updateEntry);
-app.post('/entry/delete/', entryController.deleteEntry);
+app.delete('/entry/:id', entryController.deleteEntry);
 app.post('/symptom/create/', symptomController.createSymptom);
 //app.post('/symptom/readAll', symptomController.readSymptom);
 //app.post('/symptom/update/', symptomController.updateSymptom);
