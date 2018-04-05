@@ -5,13 +5,10 @@ import Button from 'material-ui/Button';
 import Divider from 'material-ui/Divider';
 
 const Entry = props => {
-  let date = moment(props.data.date).format('MMMM DD YYYY');
-  console.log(date);
   return (
     <div className="entryBox">
     <Card>
         <CardContent>
-            { date }
         <div>Type: {props.data.type}</div>
         <div>Notes: {props.data.notes}</div>
         </CardContent>

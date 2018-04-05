@@ -8,7 +8,7 @@ const Day = props => {
   return (
     // how do we create the circuit between the store and an input field?
     // how do we update the store from a presentation component?
-    <div className="dayBox">
+    <div className="dayBox" onClick={() => props.selectDay(props.date)}>
         <span className="day">{props.day}</span>
     </div>
   )
