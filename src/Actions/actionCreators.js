@@ -10,3 +10,13 @@ export const addPeriod = (dbState) => ({
     type: types.ADD_PERIOD,
     
 });
+
+export const selectEntries = (date) => ({
+    type: types.SELECT_ENTRIES,
+    date
+})
+
+export const addEntries = (entry) => ({
+    type: types.ADD_ENTRY,
+    entry
+})
