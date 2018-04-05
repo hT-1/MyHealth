@@ -516,7 +516,11 @@ app.get('/entry/:user_id/:date', entryController.readAllOnDate);
 
 app.post('/signup', userController.createUser);
 app.post('/period/create', periodController.createPeriod);
-//app.post('/period/readAll', periodController.readPeriod);
+app.post('/period/readAllNotes', periodController.readPeriod);
+app.post('/period/length', periodController.periodLength);
+app.post('/period/cycle', periodController.periodCycle);
+
+
 // app.post('/period/update/', periodController.updatePeriod);
 // app.post('/period/delete/', periodController.deletePeriod);
 app.post('/entry/create/', entryController.createEntry);
