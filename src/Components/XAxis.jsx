@@ -20,7 +20,7 @@ class XAxis extends React.Component {
       // array containg vertical line instances for the x-axis 
       let lines = []
       ticks.forEach((tick, index) => {
-        lines.push(<line  style={style} x1={tick + 10 } y1={this.props.x} key={index} x2={tick + 10} y2={this.props.x + 4}  />)
+        lines.push(<line  style={style} x1={tick + 20 } y1={this.props.x} key={index} x2={tick + 20} y2={this.props.x + 4}  />)
       })
       // array containing the x-axis lables for symptoms
       let columnLables = []
