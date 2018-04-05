@@ -39,7 +39,7 @@ entryController.readAllOnDate = (req, res, next) => {
             throw new Error('DB QUERY FAILED TO read entry table', err);
         }
         function sendFormat(array) {
-          console.log(array)
+        console.log(array)
         var entries = {}
           for(var i = 0; i < array.length; i++) {
             //console.log(JSON.stringify(array[i]["entry_date"]))
@@ -77,21 +77,21 @@ entryController.readFrequency = (req, res, next) => {
   entryController.updateEntry = (req, res, next) => {
     const { symptom, user_id, notes, entry_date } = req.body;
           //adding for test
-    const updateEntryTxt = (`UPDATE entry SET symptom = '${symptom}', notes = '${notes}', entry_date = '${entry_date}'`)
+    //const updateEntryTxt = (`UPDATE entry SET symptom = '${symptom}', notes = '${notes}', entry_date = '${entry_date}'`)
   }
 
       //deleted in Elephant through Postman
   entryController.deleteEntry = (req, res, next) => {
-    console.log("entryController delete controller")
+    console.log(req.params)
     //check and updte below function for del entry
-    const { symptom, notes, entry_date } = req.body;
-    const deleteEntryTxt = (`DELETE FROM "entry" WHERE symptom='${symptom}' AND notes='${notes}' AND entry_date='${entry_date}'`);
+    // const { symptom, notes, entry_date } = req.body;
+    const deleteEntryTxt = (`DELETE FROM "entry" WHERE user_id = '${req.params.user_id}'`);
     console.log('to be deleted', deleteEntryTxt)
     db.query(deleteEntryTxt, (err) => {
         if (err) {
             throw new Error('DB QUERY FAILED TO DELETE FROM DATABASE', err);
         }
-        res.send('ok');
+          res.send('ok');
     });
   }
 
