@@ -17,7 +17,7 @@ const Header = props =>
           <Typography variant="title" color="inherit" className="left_nav">
             {props.month.toUpperCase()}
           </Typography>
-          <Button color="inherit"><Link to="/">Home</Link></Button>
+          <Button color="inherit"><Link to="/">HOME</Link></Button>
           <Button color="inherit"><Link to="/profile">PROFILE</Link></Button>
           <Button color="inherit" onClick={() => { downloadsjs('/export/csv'); }} >EXPORT</Button>
           <Button color="inherit" onClick={() => { downloadsjs('MySymptom.csv'); }} ><Download /></Button>
