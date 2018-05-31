@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 // import all reducers here
 import symptomReducer from './symptomReducer';
 
-
 // combine reducers
 // reducers is a FUNCTION
 const reducers = combineReducers({

@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const path = require('path');
 
 const entry = [
@@ -12,8 +11,9 @@ const output = {
 };
 
 module.exports = {
-  entry, output,
-  devtool: "eval-source-map",
+  entry,
+  output,
+  devtool: 'eval-source-map',
   module: {
     rules: [
       {
@@ -29,10 +29,11 @@ module.exports = {
       {
         test: /\.css$/,
         use: [{ // multiple loaders load in reverse order
-          loader: "style-loader" // creates style nodes from JS strings
+          loader: 'style-loader' // creates style nodes from JS strings
         }, {
-          loader: "css-loader" // translates CSS into CommonJS
+          loader: 'css-loader' // translates CSS into CommonJS
         }]
-    }]
+      }
+    ]
   },
 };

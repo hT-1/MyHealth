@@ -1,11 +1,7 @@
 import React from 'react';
 
-const WeekDay = props => {
-//   let result;
-//   function updateInputValue(e) {
-//     result = e.target.value;
-//   }
-  return (
+const WeekDay = () =>
+  (
     <div className="weekBox">
       <h1 className="headerBox">Sun</h1>
       <h1 className="headerBox">Mon</h1>
@@ -15,7 +11,6 @@ const WeekDay = props => {
       <h1 className="headerBox">Fri</h1>
       <h1 className="headerBox">Sat</h1>
     </div>
-  )
-}
+  );
 
 export default WeekDay;
